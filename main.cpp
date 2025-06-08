@@ -76,8 +76,13 @@ int main()
     glViewport(0, 0, 800, 600);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     // Load sources
-    std::string vertexCode = loadShaderSource("shaders/vertex_shader.glsl");
-    std::string fragmentCode = loadShaderSource("shaders/fragment_shader.glsl");
+    std::string vertexCode = loadShaderSource("C:\\Users\\JASMINE\\Desktop\\Blinnphong\\vertex_shader.glsl");
+    std::string fragmentCode = loadShaderSource("C:\\Users\\JASMINE\\Desktop\\Blinnphong\\fragment_shader.glsl");
+
+    if (vertexCode.empty() || fragmentCode.empty()) {
+        std::cout << "Shader file(s) not found or empty!" << std::endl;
+        return -1;
+    }
 
     const char* vShaderCode = vertexCode.c_str();
     const char* fShaderCode = fragmentCode.c_str();
@@ -98,13 +103,15 @@ int main()
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
 
+    unsigned int VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
     unsigned int EBO;
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
+
     //VBO
     unsigned int VBO;
     glGenBuffers(1, &VBO);
@@ -122,6 +129,10 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shaderProgram);
+        float timeValue = glfwGetTime();
+        float greenValue = sin(timeValue) / 2.0f + 0.5f;
+        int vertexColorLocation = glGetUniformLocation(shaderProgram, "outColor");
+        glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
         glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
