@@ -1,17 +1,33 @@
+// =================== Standard Includes ===================
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
+
+// =================== OpenGL / GLFW ===================
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "shader.h"
+
+// =================== GLM ===================
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+// =================== Project Headers ===================
+#include "shader.h"
 #include "camera.h"
 #include "mouse.h"
 #include "processInput.h"
 
+// =================== ImGui ===================
+// IMPORTANT: Define loader before OpenGL3 header
+#define IMGUI_IMPL_OPENGL_LOADER_GLAD
+
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
+// =================== stb_image ===================
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
