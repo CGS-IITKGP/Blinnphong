@@ -30,6 +30,15 @@
     <ClCompile Include="camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="light_main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="processInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="vertex_shader.glsl">
@@ -38,12 +47,30 @@
     <None Include="fragment_shader.glsl">
       <Filter>shaders</Filter>
     </None>
+    <None Include="light_vs.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="light_fs.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="lightcube_vs.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="lightcube_fs.glsl">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="processInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -135,15 +135,24 @@
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="light_main.cpp" />
+    <ClCompile Include="mouse.cpp" />
+    <ClCompile Include="processInput.cpp" />
     <ClCompile Include="shaderclass.cpp" />
     <ClCompile Include="src\glad.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment_shader.glsl" />
+    <None Include="light_fs.glsl" />
+    <None Include="light_vs.glsl" />
+    <None Include="lightcube_fs.glsl" />
+    <None Include="lightcube_vs.glsl" />
     <None Include="vertex_shader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="mouse.h" />
+    <ClInclude Include="processInput.h" />
     <ClInclude Include="shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

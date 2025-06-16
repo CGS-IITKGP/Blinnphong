@@ -1,5 +1,17 @@
 #include "shader.h"
 
+// Set vec3 uniform by 3 floats
+void Shader::setVec3(const std::string& name, float x, float y, float z) const
+{
+    glUniform3f(glGetUniformLocation(ID, name.c_str()), x, y, z);
+}
+
+// Set vec3 uniform by glm::vec3
+void Shader::setVec3(const std::string& name, const glm::vec3& value) const
+{
+    glUniform3fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
+}
+
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
     std::string vertexCode;
