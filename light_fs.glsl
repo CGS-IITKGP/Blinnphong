@@ -22,10 +22,11 @@ void main()
     vec3 diffuse = diff * lightColor;
 
     // Specular (Blinn-Phong)
+    float specularStrength = 0.5;
     vec3 viewDir = normalize(viewPos - FragPos);
-    vec3 halfwayDir = normalize(lightDir + viewDir);
-    float spec = pow(max(dot(norm, halfwayDir), 0.0), 32.0);
-    vec3 specular = spec * lightColor;
+    vec3 reflectDir = reflect(-lightDir, norm);  
+    float spec = pow(max(dot(norm, reflectDir), 0.0), 256.0);
+    vec3 specular = specularStrength * spec * lightColor;
 
     vec3 result = (ambient + diffuse + specular) * objectColor;
     FragColor = vec4(result, 1.0);
