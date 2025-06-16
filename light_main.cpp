@@ -237,6 +237,10 @@ int main() {
         lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
         lightingShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
 
+        lightingShader.setFloat("light.constant", 1.0f);
+        lightingShader.setFloat("light.linear", 0.09f);
+        lightingShader.setFloat("light.quadratic", 0.032f);
+
         //material
         lightingShader.setFloat("material.shininess", 0.1f * 128.0f); // 12.8
 
@@ -258,9 +262,10 @@ int main() {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, specularMap);
 
-        /*glm::mat4 model = glm::mat4(1.0f);
+        //world transformation
+        glm::mat4 model = glm::mat4(1.0f);
         lightingShader.setMat4("model", model);
-        glBindVertexArray(containerVAO);
+        /*glBindVertexArray(containerVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);*/
 
         glBindVertexArray(containerVAO);
@@ -276,17 +281,17 @@ int main() {
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
 
-        //// Draw light source
-        //lightCubeShader.use();
-        //lightCubeShader.setMat4("projection", projection);
-        //lightCubeShader.setMat4("view", view);
-        //model = glm::mat4(1.0f);
-        //// putting the light cube to where the light is as a small cube
-        //model = glm::translate(model, lightPos);
-        //model = glm::scale(model, glm::vec3(0.2f));
-        //lightCubeShader.setMat4("model", model);
-        //glBindVertexArray(lightVAO);
-        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        // Draw light source
+        lightCubeShader.use();
+        lightCubeShader.setMat4("projection", projection);
+        lightCubeShader.setMat4("view", view);
+        model = glm::mat4(1.0f);
+        // putting the light cube to where the light is as a small cube
+        model = glm::translate(model, lightPos);
+        model = glm::scale(model, glm::vec3(0.2f));
+        lightCubeShader.setMat4("model", model);
+        glBindVertexArray(lightVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
