@@ -1,11 +1,16 @@
 #include "processInput.h"
 #include "camera.h"
-
+#define IMGUI_IMPL_OPENGL_LOADER_GLAD
+#include "imgui.h"
 extern Camera camera;
 extern float deltaTime;
 
 void processInput(GLFWwindow* window)
-{
+{   
+    ImGuiIO& io = ImGui::GetIO();
+    if (!io.WantCaptureKeyboard) {
+        processInput(window); // Your camera/WASD code
+    }
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
     // camera user control 

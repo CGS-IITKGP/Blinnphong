@@ -33,8 +33,8 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1600;
+const unsigned int SCR_HEIGHT = 1000;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -148,6 +148,9 @@ int main() {
     // Setup ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
+    // as i dont have my mouse so i enabled keyboard settings, sorry to whoever is running this file.
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable keyboard controls
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -243,9 +246,21 @@ int main() {
 
     // Light source position
     glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
-
+    glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+    float shininess = 32.0f;
+    static int scene_type = 0;
+    const char* scenes[] = { "Normal", "Desert", "Snow" };
+	// for keyboard F5 to toggle ImGui window
+    bool showImGuiWindow = true;
     // Render loop
     while (!glfwWindowShouldClose(window)) {
+        // Inside your render loop:
+        if (glfwGetKey(window, GLFW_KEY_F5) == GLFW_PRESS) {
+            showImGuiWindow = !showImGuiWindow;
+            while (glfwGetKey(window, GLFW_KEY_F5) == GLFW_PRESS) {
+                glfwPollEvents();
+            }
+        }
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
@@ -256,9 +271,35 @@ int main() {
         ImGui::NewFrame();
 
         // Example ImGui window (customize as needed)
-        ImGui::Begin("Scene Controls");
+        /*ImGui::Begin("Scene Controls");
         ImGui::Text("Use WASD + Mouse to move");
-        ImGui::End();
+        ImGui::End();*/
+        static bool f5WasPressed = false;
+        if (glfwGetKey(window, GLFW_KEY_F5) == GLFW_PRESS) {
+            if (!f5WasPressed) {
+                showImGuiWindow = !showImGuiWindow;
+                f5WasPressed = true;
+                if (showImGuiWindow) {
+                    ImGui::GetIO().WantCaptureKeyboard = true; // ImGui wants keyboard
+                }
+                else {
+                    ImGui::GetIO().WantCaptureKeyboard = false; // Scene wants keyboard
+                }
+            }
+        }
+        else {
+            f5WasPressed = false;
+        }
+        if (showImGuiWindow) {
+            ImGui::Begin("Scene Controls");
+            ImGui::SetWindowSize(ImVec2(500, 400), ImGuiCond_Once);
+            ImGui::Text("Use WASD + Mouse to move");
+            ImGui::SliderFloat3("Light Position", glm::value_ptr(lightPos), -10.0f, 10.0f);
+            ImGui::ColorEdit3("Light Color", glm::value_ptr(lightColor));
+            ImGui::SliderFloat("Shininess", &shininess, 1.0f, 256.0f);
+            ImGui::Combo("Scene Type", &scene_type, scenes, IM_ARRAYSIZE(scenes));
+            ImGui::End();
+        }
 
         processInput(window);
 
@@ -313,6 +354,11 @@ int main() {
         lightingShader.setFloat("spotLight.quadratic", 0.032f);
         lightingShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
         lightingShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
+
+        // Use ImGui-tweaked values
+        lightingShader.setVec3("light.position", lightPos);
+        lightingShader.setVec3("lightColor", lightColor); // if used in your shader
+        lightingShader.setFloat("material.shininess", shininess);
 
         //// light properties
         //lightingShader.use();
@@ -401,3 +447,13 @@ int main() {
     glfwTerminate();
     return 0;
 }
+
+/* All Shortcuts
+Key	Action when ImGui panel visible
+Tab	Move to next widget
+Shift + Tab	Move to previous widget
+Arrow keys	Change value or move selection
+Enter / Space	Activate widget(e.g.open combo)
+Escape	Close popup / unfocus
+F5	Show / hide ImGui, toggle focus
+*/
