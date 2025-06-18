@@ -145,6 +145,14 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
 
+    // Setup ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
     // using fragment and vertex shader for main.cpp and light fragment and vertex shader for light_main.cpp
     Shader lightingShader("light_vs.glsl", "light_fs.glsl");
     Shader lightCubeShader("lightcube_vs.glsl", "lightcube_fs.glsl");
@@ -241,6 +249,16 @@ int main() {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        // Start the ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        // Example ImGui window (customize as needed)
+        ImGui::Begin("Scene Controls");
+        ImGui::Text("Use WASD + Mouse to move");
+        ImGui::End();
 
         processInput(window);
 
@@ -354,7 +372,9 @@ int main() {
 
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
-
+        // Render ImGui
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         //// Draw light source
         //lightCubeShader.use();
         //lightCubeShader.setMat4("projection", projection);
@@ -372,6 +392,9 @@ int main() {
     }
 
     // Cleanup
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
     glDeleteVertexArrays(1, &containerVAO);
     glDeleteVertexArrays(1, &lightVAO);
     glDeleteBuffers(1, &VBO);
