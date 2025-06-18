@@ -1,0 +1,3 @@
+C:/Users/JASMINE/Desktop/Blinnphong/build/CMakeFiles/Blinnphong.dir
+C:/Users/JASMINE/Desktop/Blinnphong/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/JASMINE/Desktop/Blinnphong/build/CMakeFiles/ZERO_CHECK.dir

@@ -1,5 +1,5 @@
-#include "processInput.h"
 #include "camera.h"
+#include "processInput.h"
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
 #include "imgui.h"
 extern Camera camera;
