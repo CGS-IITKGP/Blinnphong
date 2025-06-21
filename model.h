@@ -7,6 +7,7 @@
 class Model
 {
 public:
+    vector<Mesh> meshes;
     Model(const std::string& path)
     {
         loadModel(path);
@@ -15,7 +16,6 @@ public:
 private:
     // model data
     vector<Texture> textures_loaded;
-    vector<Mesh> meshes;
     string directory;
 
     void loadModel(string path);
