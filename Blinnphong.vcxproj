@@ -105,6 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\vcpkg\installed\x64-windows-static\include;C:\Users\JASMINE\Desktop\Blinnphong\Imgui;C:\Users\JASMINE\Desktop\Blinnphong\Imgui\backends;C:\Users\JASMINE\Downloads\assimp-master\assimp-master\build\include;C:\Users\JASMINE\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,6 +123,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\vcpkg\installed\x64-windows-static\include;C:\Users\JASMINE\Desktop\Blinnphong\Imgui;C:\Users\JASMINE\Desktop\Blinnphong\Imgui\backends;C:\Users\JASMINE\Downloads\assimp-master\assimp-master\build\include;C:\Users\JASMINE\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
