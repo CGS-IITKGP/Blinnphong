@@ -31,15 +31,15 @@
 namespace fs = std::filesystem;
 
 // Window dimensions
-const unsigned int SCR_WIDTH = 1280;
-const unsigned int SCR_HEIGHT = 720;
+const unsigned int SCR_WIDTH = 1200;
+const unsigned int SCR_HEIGHT = 800;
 
 // Timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
 // Camera instance (extern in processInput and mouse)
-Camera camera(glm::vec3(0.0f, 5.0f, 15.0f));
+Camera camera(glm::vec3(0.0f, 1.0f, 12.0f));
 
 // Light variables
 glm::vec3 lightPos(2.0f, 4.0f, 2.0f);
@@ -102,13 +102,16 @@ int main()
     // ImGui setup
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
     // Load your shaders
     Shader lightingShader("vertex_shader.glsl", "fragment_shader.glsl");
+
+    float lightIntensity = 1.0f;
 
     unsigned int textureID;
     glGenTextures(1, &textureID);
@@ -132,8 +135,9 @@ int main()
 
     // Load model (castle.fbx)
     Model castleModel("C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\utubecastle.fbx");
+    Model carModel("C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\cartutorial.fbx");
     std::cout << "Loading model: " << "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\utubtecastle.fbx" << std::endl;
-
+    int currentModelIndex = 0;
     // Model transform controls for ImGui
     glm::vec3 modelPosition(0.0f);
     glm::vec3 modelRotation(0.0f);
@@ -168,13 +172,23 @@ int main()
 
         // ImGui window
         if (showImGuiWindow) {
-            ImGui::Begin("Scene Controls");
-            ImGui::SetWindowSize(ImVec2(500, 400), ImGuiCond_Once);
-            ImGui::Text("Use WASD + Mouse to move");
+            int display_w, display_h;
+            glfwGetFramebufferSize(window, &display_w, &display_h);
+            float windowWidth = display_w * 0.2f;
+            float windowHeight = display_h * 0.3f;
+            // Set position to bottom-right
+            ImVec2 windowPos = ImVec2(10,10);
+            ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
+            ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
+            ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
+            ImGui::Begin("Scene Controls", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+            ImGui::Text("Use keyboard: Tab/Arrows/Enter");
             ImGui::SliderFloat3("Light Position", glm::value_ptr(lightPos), -10.0f, 10.0f);
-            ImGui::ColorEdit3("Light Color", glm::value_ptr(lightColor));
             ImGui::SliderFloat("Shininess", &shininess, 1.0f, 256.0f);
-            ImGui::Combo("Scene Type", &scene_type, scenes, IM_ARRAYSIZE(scenes));
+            ImGui::ColorEdit3("Light Color", glm::value_ptr(lightColor));
+            ImGui::SliderFloat("Color Intensity", &lightIntensity, 0.0f, 10.0f);
+            const char* modelNames[] = { "Castle", "Car" };
+            ImGui::Combo("Model", &currentModelIndex, modelNames, IM_ARRAYSIZE(modelNames));
             ImGui::End();
         }
 
@@ -184,6 +198,9 @@ int main()
 
         // Activate shader
         lightingShader.use();
+
+        lightingShader.setVec3("lightColor", lightColor); // Modulated intensity
+        lightingShader.setFloat("lightIntensity", lightIntensity *0.1f); // Modulated intensity
 
         // Set lighting uniforms
         lightingShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
@@ -224,31 +241,27 @@ int main()
         lightingShader.setMat4("view", view);
         lightingShader.setVec3("viewPos", camera.Position);
 
-        // Model matrix (optional: controlled by ImGui)
-        //glm::mat4 model = glm::mat4(1.0f);
-        //model = glm::scale(model, glm::vec3(modelScale));
-        //model = glm::translate(model, modelPosition);
-        //model = glm::rotate(model, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotate 180 degrees around X
-        //model = glm::rotate(model, glm::radians(modelRotation.y), glm::vec3(0, 1, 0));
-        //model = glm::rotate(model, glm::radians(modelRotation.z), glm::vec3(0, 0, 1));
-        ////model = glm::scale(model, glm::vec3(modelScale, modelScale, modelScale));
-        // Model matrix
+        // Or, use the modelAxis for custom axis rotation:
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, modelPosition);
-        model = glm::translate(model, glm::vec3(0.0f, +5.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(modelRotation.x), glm::vec3(1, 0, 0));
-        model = glm::rotate(model, glm::radians(modelRotation.y), glm::vec3(0, 1, 0));
-        model = glm::rotate(model, glm::radians(modelRotation.z), glm::vec3(0, 0, 1));
-        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, glm::radians(-180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        // Or, use the modelAxis for custom axis rotation:
-        // model = glm::rotate(model, glm::radians(modelRotation.y), modelAxis);
         model = glm::scale(model, glm::vec3(modelScale));
+        if (currentModelIndex == 0) {
+            // Castle specific rotation
+            model = glm::rotate(model, glm::radians(modelRotation.x), glm::vec3(1, 0, 0));
+            model = glm::rotate(model, glm::radians(modelRotation.y), glm::vec3(0, 1, 0));
+            model = glm::rotate(model, glm::radians(modelRotation.z), glm::vec3(0, 0, 1));
+            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+            model = glm::rotate(model, glm::radians(-180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        }
+        else if (currentModelIndex == 1) {
+            // Car specific rotation if needed
+            model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        }
+
         lightingShader.setMat4("model", model);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureID);
-        castleModel.Draw(lightingShader);
 
         for (auto& mesh : castleModel.meshes) {
             mesh.textures.clear();  // clear old
@@ -260,7 +273,10 @@ int main()
         }
 
         // Draw model
-        castleModel.Draw(lightingShader);
+        if (currentModelIndex == 0)
+            castleModel.Draw(lightingShader);
+        else if (currentModelIndex == 1)
+            carModel.Draw(lightingShader);
 
         // Render ImGui
         ImGui::Render();

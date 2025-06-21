@@ -50,6 +50,7 @@ uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform SpotLight spotLight;
 uniform Material material;
 uniform vec3 lightColor;
+uniform float lightIntensity;
 uniform vec3 light_position;
 
 // Function prototypes
@@ -73,9 +74,9 @@ void main()
     result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
 
     // Optional: add ImGui-tweaked light
+    float scaledIntensity = lightIntensity * 0.1;
     result += lightColor * 0.2; // subtle effect
-
-    FragColor = vec4(result, 1.0); // FIXED: vec4 not vec5
+    FragColor = vec4(result * lightColor * scaledIntensity, 1.0);
 }
 
 // =====================

@@ -43,17 +43,26 @@ void Model::Draw(Shader& shader)
     for (unsigned int i = 0; i < meshes.size(); i++)
         meshes[i].Draw(shader);
 }
-void Model::loadModel(string path)
+void Model::loadModel(std::string path)
 {
+    std::cout << "?? Loading model: " << path << std::endl;
+
     Assimp::Importer import;
-    const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+    const aiScene* scene = import.ReadFile(path,
+        aiProcess_Triangulate |
+        aiProcess_FlipUVs |
+        aiProcess_CalcTangentSpace);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
-        cout << "ERROR::ASSIMP::" << import.GetErrorString() << endl;
+        std::cerr << "? ERROR::ASSIMP: Failed to load model at " << path << std::endl;
+        std::cerr << "    Assimp Error: " << import.GetErrorString() << std::endl;
         return;
     }
-    directory = path.substr(0, path.find_last_of('/\\'));
+
+    directory = path.substr(0, path.find_last_of("/\\"));
+
+    std::cout << "? Model loaded successfully. Starting to process nodes..." << std::endl;
 
     processNode(scene->mRootNode, scene);
 }
