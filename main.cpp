@@ -1,4 +1,4 @@
-// =================== Standard Includes ===================
+﻿// =================== Standard Includes ===================
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -28,6 +28,7 @@
 #include "imgui_impl_opengl3.h"
 
 #include <filesystem>
+using namespace std;
 namespace fs = std::filesystem;
 
 // Window dimensions
@@ -61,10 +62,23 @@ int scene_type = 0;
 
 // Callback for window resize
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-
+unsigned int createWhiteTexture()
+{
+    unsigned int tex;
+    unsigned char whitePixel[3] = { 255, 255, 255 };
+    glGenTextures(1, &tex);
+    glBindTexture(GL_TEXTURE_2D, tex);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, whitePixel);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    return tex;
+}
 int main()
 {
     // GLFW init
+    cout << " 1.start " << endl;
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -72,7 +86,7 @@ int main()
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-
+    cout << " 2. Window " << endl;
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Castle Model with ImGui", NULL, NULL);
     if (!window)
     {
@@ -96,7 +110,7 @@ int main()
         std::cerr << "Failed to initialize GLAD\n";
         return -1;
     }
-
+    cout << " glad " << endl;
     glEnable(GL_DEPTH_TEST);
 
     // ImGui setup
@@ -107,10 +121,13 @@ int main()
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
-
+    cout << " imgui " << endl;
     // Load your shaders
     Shader lightingShader("vertex_shader.glsl", "fragment_shader.glsl");
-
+    lightingShader.use();
+    lightingShader.setInt("diffuseMap", 0);
+    lightingShader.setInt("specularMap", 1);
+    cout << " shader " << endl;
     float lightIntensity = 1.0f;
 
     unsigned int textureID;
@@ -132,18 +149,62 @@ int main()
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+    //cout << " T1 " << endl;
+    unsigned int carTextures[3];
+    //cout << " bla " << endl;
+    const char* texturePaths[] = {
+        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\moon.jpg",
+        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\untitled.jpg",
+        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\wheel.jpg"
+    };
+    cout << " T2.1.2.3. " << endl;
+    glGenTextures(3, carTextures);
+    //cout << " glgen " << endl;
+    for (int i = 0; i < 3; ++i) {
+        int width, height, nrChannels;
+        stbi_set_flip_vertically_on_load(true);
+        unsigned char* data = stbi_load(texturePaths[i], &width, &height, &nrChannels, 0);
+        //cout << " done*+  " << endl;
+        glBindTexture(GL_TEXTURE_2D, carTextures[i]);
 
+        if (!data) {
+            std::cerr << " Failed to load texture: " << texturePaths[i] << std::endl;
+
+            // Use 1x1 white fallback pixel
+            unsigned char whitePixel[] = { 255, 255, 255 };
+            //cout << " bla " << endl;
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, whitePixel);
+            //cout << " bla " << endl;
+            continue;
+        }
+        else {
+            GLenum format = (nrChannels == 4) ? GL_RGBA : GL_RGB;
+            //cout << " hello " << endl;
+            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            //cout << " deb " << endl;
+            glGenerateMipmap(GL_TEXTURE_2D);
+            //cout << " ug " << endl;
+            stbi_image_free(data);
+            cout << " Loaded texture: " << texturePaths[i] << std::endl;
+        }
+
+        // Set texture parameters (even for fallback)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
     // Load model (castle.fbx)
     Model castleModel("C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\utubecastle.fbx");
     Model carModel("C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\cartutorial.fbx");
-    std::cout << "Loading model: " << "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\utubtecastle.fbx" << std::endl;
+    cout << "Loading model: " << "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\utubtecastle.fbx" << std::endl;
     int currentModelIndex = 0;
     // Model transform controls for ImGui
     glm::vec3 modelPosition(0.0f);
     glm::vec3 modelRotation(0.0f);
     float modelScale = 1.0f;
     glm::vec3 modelAxis(0.0f, 1.0f, 0.0f); // Rotation axis (Y axis by default)
-
+    
     while (!glfwWindowShouldClose(window)) {
         // Calculate delta time
         float currentFrame = glfwGetTime();
@@ -185,7 +246,7 @@ int main()
             ImGui::Text("Use keyboard: Tab/Arrows/Enter");
             ImGui::SliderFloat3("Light Position", glm::value_ptr(lightPos), -10.0f, 10.0f);
             ImGui::SliderFloat("Shininess", &shininess, 1.0f, 256.0f);
-            ImGui::ColorEdit3("Light Color", glm::value_ptr(lightColor));
+            //ImGui::ColorEdit3("Light Color", glm::value_ptr(lightColor));
             ImGui::SliderFloat("Color Intensity", &lightIntensity, 0.0f, 10.0f);
             const char* modelNames[] = { "Castle", "Car" };
             ImGui::Combo("Model", &currentModelIndex, modelNames, IM_ARRAYSIZE(modelNames));
@@ -198,9 +259,9 @@ int main()
 
         // Activate shader
         lightingShader.use();
-
-        lightingShader.setVec3("lightColor", lightColor); // Modulated intensity
+        //lightingShader.setVec3("lightColor", lightColor); // Modulated intensity
         lightingShader.setFloat("lightIntensity", lightIntensity *0.1f); // Modulated intensity
+        lightingShader.setFloat("shininess", shininess);
 
         // Set lighting uniforms
         lightingShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
@@ -259,25 +320,46 @@ int main()
         }
 
         lightingShader.setMat4("model", model);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureID);
-
-        for (auto& mesh : castleModel.meshes) {
-            mesh.textures.clear();  // clear old
-            Texture tex;
-            tex.id = textureID;
-            tex.type = "texture_diffuse"; // or "material.diffuse1"
-            tex.path = "wall.jpg";
-            mesh.textures.push_back(tex);
-        }
-
+        
         // Draw model
-        if (currentModelIndex == 0)
+        if (currentModelIndex == 0) {
+            for (auto& mesh : castleModel.meshes) {
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, textureID);
+                mesh.textures.clear();  // clear old
+                Texture tex;
+                tex.id = textureID;
+                tex.type = "texture_diffuse"; // or "material.diffuse1"
+                tex.path = "wall.jpg";
+                mesh.textures.push_back(tex);
+            }
             castleModel.Draw(lightingShader);
-        else if (currentModelIndex == 1)
-            carModel.Draw(lightingShader);
+        }
+        else if (currentModelIndex == 1) {
+            //glActiveTexture(GL_TEXTURE0);  // Set active texture unit before binding
+            //glBindTexture(GL_TEXTURE_2D, textureID);  // Optional: bind a fallback/base texture
+            //for (int i = 0; i < carModel.meshes.size(); ++i) {
+            //    carModel.meshes[i].textures.clear();
 
+            //    Texture tex;
+            //    tex.id = carTextures[i % 3]; // Cycle through 3 car-specific textures
+            //    tex.type = "texture_diffuse";  // Must match the shader's uniform type
+            //    tex.path = texturePaths[i % 3];
+
+            //    carModel.meshes[i].textures.push_back(tex);
+            //}
+
+            //carModel.Draw(lightingShader);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, carTextures[0]); // Use first car texture
+
+            // Bind white texture to specular slot (since we don't have specular map)
+            static unsigned int whiteTex = createWhiteTexture();
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, whiteTex);
+
+            carModel.Draw(lightingShader);
+        }
         // Render ImGui
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

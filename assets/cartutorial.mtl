@@ -4,12 +4,12 @@
 newmtl BODY
 Ns 490.000000
 Ka 1.000000 1.000000 1.000000
-Kd 0.004627 0.004627 0.004627
 Ks 0.722545 0.722545 0.722545
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd C:/moon.jpg
 
 newmtl baghal
 Ns 250.000000
@@ -99,7 +99,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd untitled.jpg
+map_Kd C:/untitled.jpg
+map_Bump -bm 0.500000 C:/untitled2.jpg
 
 newmtl red_lights
 Ns 772.696899
