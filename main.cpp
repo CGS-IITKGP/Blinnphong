@@ -1,27 +1,18 @@
-﻿// =================== Standard Includes ===================
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
-
-// =================== OpenGL / GLFW ===================
 #include "include/glad/glad.h"
 #include <GLFW/glfw3.h>
-
-// =================== GLM ===================
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-// =================== Project Headers ===================
 #include "shader.h"
 #include "camera.h"
 #include "mouse.h"
 #include "processInput.h"
 #include "model.h"
 #include "stb_image.h"
-
-// =================== ImGui ===================
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -39,7 +30,7 @@ const unsigned int SCR_HEIGHT = 800;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-// Camera instance (extern in processInput and mouse)
+// Camera instance (in processInput and mouse)
 Camera camera(glm::vec3(0.0f, 1.0f, 12.0f));
 
 // Light variables
@@ -55,12 +46,11 @@ glm::vec3 pointLightPositions[] = {
     glm::vec3(-2.0f, 4.0f, -2.0f)
 };
 
-// ImGui variables
+// ImGui
 bool showImGuiWindow = true;
 const char* scenes[] = { "Castle", "Other" };
 int scene_type = 0;
 
-// Callback for window resize
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 unsigned int createWhiteTexture()
 {
@@ -122,7 +112,7 @@ int main()
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
     cout << " imgui " << endl;
-    // Load your shaders
+    // shaders
     Shader lightingShader("vertex_shader.glsl", "fragment_shader.glsl");
     lightingShader.use();
     lightingShader.setInt("diffuseMap", 0);
@@ -133,12 +123,12 @@ int main()
     unsigned int textureID;
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
-    // Set texture wrapping/filtering options
+    // Setting texture wrapping/filtering options
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // Load image with stb_image
+    // Loading images
     int width, height, nrChannels;
     unsigned char* data = stbi_load("C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\wall.jpg", &width, &height, &nrChannels, 0);
     if (data) {
@@ -188,22 +178,23 @@ int main()
             cout << " Loaded texture: " << texturePaths[i] << std::endl;
         }
 
-        // Set texture parameters (even for fallback)
+        // Setting texture parameters (even for fallback)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
-    // Load model (castle.fbx)
+    // Loading  model
     Model castleModel("C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\utubecastle.fbx");
     Model carModel("C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\cartutorial.fbx");
     cout << "Loading model: " << "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\utubtecastle.fbx" << std::endl;
     int currentModelIndex = 0;
+
     // Model transform controls for ImGui
     glm::vec3 modelPosition(0.0f);
     glm::vec3 modelRotation(0.0f);
     float modelScale = 1.0f;
-    glm::vec3 modelAxis(0.0f, 1.0f, 0.0f); // Rotation axis (Y axis by default)
+    glm::vec3 modelAxis(0.0f, 1.0f, 0.0f);
     
     while (!glfwWindowShouldClose(window)) {
         // Calculate delta time
@@ -302,12 +293,10 @@ int main()
         lightingShader.setMat4("view", view);
         lightingShader.setVec3("viewPos", camera.Position);
 
-        // Or, use the modelAxis for custom axis rotation:
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, modelPosition);
         model = glm::scale(model, glm::vec3(modelScale));
         if (currentModelIndex == 0) {
-            // Castle specific rotation
             model = glm::rotate(model, glm::radians(modelRotation.x), glm::vec3(1, 0, 0));
             model = glm::rotate(model, glm::radians(modelRotation.y), glm::vec3(0, 1, 0));
             model = glm::rotate(model, glm::radians(modelRotation.z), glm::vec3(0, 0, 1));
@@ -315,7 +304,6 @@ int main()
             model = glm::rotate(model, glm::radians(-180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
         }
         else if (currentModelIndex == 1) {
-            // Car specific rotation if needed
             model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         }
 
@@ -326,10 +314,10 @@ int main()
             for (auto& mesh : castleModel.meshes) {
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, textureID);
-                mesh.textures.clear();  // clear old
+                mesh.textures.clear();
                 Texture tex;
                 tex.id = textureID;
-                tex.type = "texture_diffuse"; // or "material.diffuse1"
+                tex.type = "texture_diffuse";
                 tex.path = "wall.jpg";
                 mesh.textures.push_back(tex);
             }
