@@ -22,9 +22,10 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-// Window dimensions
+// Window
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 800;
+float clear_color[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
 
 // Timing
 float deltaTime = 0.0f;
@@ -58,7 +59,7 @@ unsigned int createWhiteTexture()
     unsigned char whitePixel[3] = { 255, 255, 255 };
     glGenTextures(1, &tex);
     glBindTexture(GL_TEXTURE_2D, tex);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, whitePixel);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, whitePixel);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -120,13 +121,15 @@ int main()
     cout << " shader " << endl;
     float lightIntensity = 1.0f;
 
-    std::vector<std::string> texturePaths2 = {
+    vector<string> texturePaths2 = {
     "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\wall.jpg",
     "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene\\Diffuse_Bake_4k.jpg",
     "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\alexander-andrews-vGCErDhrc3E-unsplash.jpg"
     };
 
-    std::vector<unsigned int> textureIDs(texturePaths2.size());
+    vector<unsigned int> textureIDs(texturePaths2.size());
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     int width, height, nrChannels;
 
@@ -142,9 +145,9 @@ int main()
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        unsigned char* data = stbi_load(texturePaths2[i].c_str(), &width, &height, &nrChannels, 0);
+        unsigned char* data = stbi_load(texturePaths2[i].c_str(), &width, &height, &nrChannels, 4);
         if (data) {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);
             std::cout << "Loaded texture: " << texturePaths2[i] << std::endl;
         }
@@ -235,9 +238,11 @@ int main()
     };
     glGenTextures(18, sceneTextures);
     for (int i = 0; i < 18; ++i) {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         int width, height, nrChannels;
         stbi_set_flip_vertically_on_load(true);
-        unsigned char* data = stbi_load(texturePaths[i], &width, &height, &nrChannels, 0);
+        unsigned char* data = stbi_load(texturePaths[i], &width, &height, &nrChannels, 4);
         glBindTexture(GL_TEXTURE_2D, sceneTextures[i]);
 
         if (!data) {
@@ -245,14 +250,12 @@ int main()
 
             // Use 1x1 white fallback pixel
             unsigned char whitePixel[] = { 255, 255, 255 };
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, whitePixel);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, whitePixel);
             continue;
         }
         else {
             cout << "1 ";
-            GLenum format = (nrChannels == 4) ? GL_RGBA : GL_RGB;
-            cout << "pew";
-            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
             cout << "pew";
             glGenerateMipmap(GL_TEXTURE_2D);
             cout << "pew";
@@ -329,19 +332,21 @@ int main()
             ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
             ImGui::Begin("Scene Controls", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
             ImGui::Text("Use keyboard: Tab/Arrows/Enter");
+            ImGui::ColorEdit3("Window Color", clear_color);
             ImGui::SliderFloat3("Light Position", glm::value_ptr(lightPos), -10.0f, 10.0f);
             ImGui::SliderFloat("Shininess", &shininess, 1.0f, 256.0f);
             //ImGui::ColorEdit3("Light Color", glm::value_ptr(lightColor));
             ImGui::SliderFloat("Color Intensity", &lightIntensity, 0.0f, 10.0f);
-            const char* modelNames[] = { "Castle", "Car" };
+            const char* modelNames[] = { "Castle", "Home" };
             ImGui::Combo("Model", &currentModelIndex, modelNames, IM_ARRAYSIZE(modelNames));
             ImGui::End();
         }
 
         // Clear screen
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClearColor(clear_color[0], clear_color[1], clear_color[2], clear_color[3]);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         // Activate shader
         lightingShader.use();
         //lightingShader.setVec3("lightColor", lightColor); // Modulated intensity

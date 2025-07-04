@@ -62,6 +62,7 @@ void main()
 {
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
+    float alpha = texture(diffuseTextures[selectedTexture], TexCoords).a;
 
     vec3 result = CalcDirLight(dirLight, norm, viewDir);
 
@@ -70,7 +71,7 @@ void main()
 
     result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
 
-    FragColor = vec4(result * lightIntensity, 1.0);
+    FragColor = vec4(result * lightIntensity, alpha);
 }
 
 // =====================
