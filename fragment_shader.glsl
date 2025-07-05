@@ -31,7 +31,7 @@ struct SpotLight {
 };
 
 #define NR_POINT_LIGHTS 4
-#define NUM_DIFFUSE_TEXTURES 3  // Adjust based on how many textures you load
+#define NUM_DIFFUSE_TEXTURES 7  // Adjust based on how many textures you load
 
 in vec3 FragPos;
 in vec3 Normal;
@@ -48,6 +48,9 @@ uniform sampler2D specularMap;
 uniform float shininess;
 uniform float lightIntensity;
 uniform int selectedTexture; // which texture to use (0, 1, or 2)
+uniform bool useDirLight;
+uniform bool usePointLights;
+uniform bool useSpotLight;
 
 vec3 getDiffuseColor() {
     return texture(diffuseTextures[selectedTexture], TexCoords).rgb;
@@ -64,12 +67,17 @@ void main()
     vec3 viewDir = normalize(viewPos - FragPos);
     float alpha = texture(diffuseTextures[selectedTexture], TexCoords).a;
 
-    vec3 result = CalcDirLight(dirLight, norm, viewDir);
+    vec3 result = vec3(0.0);
 
-    for (int i = 0; i < NR_POINT_LIGHTS; i++)
-        result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
+    if (useDirLight)
+        result += CalcDirLight(dirLight, norm, viewDir);
 
-    result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
+    if (usePointLights)
+        for (int i = 0; i < NR_POINT_LIGHTS; i++)
+            result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
+
+    if (useSpotLight)
+        result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
 
     FragColor = vec4(result * lightIntensity, alpha);
 }

@@ -38,6 +38,9 @@ Camera camera(glm::vec3(0.0f, 1.0f, 12.0f));
 glm::vec3 lightPos(2.0f, 4.0f, 2.0f);
 glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 float shininess = 32.0f;
+bool useDirLight = true;
+bool usePointLights = true;
+bool useSpotLight = true;
 
 // Point lights positions
 glm::vec3 pointLightPositions[] = {
@@ -78,7 +81,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
     cout << " 2. Window " << endl;
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Castle Model with ImGui", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Dual with ImGui setup", NULL, NULL);
     if (!window)
     {
         std::cerr << "Failed to create GLFW window\n";
@@ -156,51 +159,6 @@ int main()
         }
         stbi_image_free(data);
     }
-    //cout << " T1 " << endl;
-    //unsigned int carTextures[3];
-    ////cout << " bla " << endl;
-    //const char* texturePaths[] = {
-    //    "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\moon.jpg",
-    //    "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\untitled.jpg",
-    //    "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\wheel.jpg"
-    //};
-    //cout << " T2.1.2.3. " << endl;
-    //glGenTextures(3, carTextures);
-    ////cout << " glgen " << endl;
-    //for (int i = 0; i < 3; ++i) {
-    //    int width, height, nrChannels;
-    //    stbi_set_flip_vertically_on_load(true);
-    //    unsigned char* data = stbi_load(texturePaths[i], &width, &height, &nrChannels, 0);
-    //    //cout << " done*+  " << endl;
-    //    glBindTexture(GL_TEXTURE_2D, carTextures[i]);
-
-    //    if (!data) {
-    //        std::cerr << " Failed to load texture: " << texturePaths[i] << std::endl;
-
-    //        // Use 1x1 white fallback pixel
-    //        unsigned char whitePixel[] = { 255, 255, 255 };
-    //        //cout << " bla " << endl;
-    //        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, whitePixel);
-    //        //cout << " bla " << endl;
-    //        continue;
-    //    }
-    //    else {
-    //        GLenum format = (nrChannels == 4) ? GL_RGBA : GL_RGB;
-    //        //cout << " hello " << endl;
-    //        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-    //        //cout << " deb " << endl;
-    //        glGenerateMipmap(GL_TEXTURE_2D);
-    //        //cout << " ug " << endl;
-    //        stbi_image_free(data);
-    //        cout << " Loaded texture: " << texturePaths[i] << std::endl;
-    //    }
-
-    //    // Setting texture parameters (even for fallback)
-    //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //}"C:\Users\JASMINE\Desktop\Blinnphong\assets\Scene2\vecteezy_a-group-of-trees-in-the-middle-of-a-field_51765352.png"
     
     unsigned int sceneTextures[18];
     const char* texturePaths[] = {
@@ -292,7 +250,7 @@ int main()
     glm::vec3 modelRotation(0.0f);
     float modelScale = 1.0f;
     glm::vec3 modelAxis(0.0f, 1.0f, 0.0f);
-    
+
     while (!glfwWindowShouldClose(window)) {
         // Calculate delta time
         float currentFrame = glfwGetTime();
@@ -323,17 +281,21 @@ int main()
         if (showImGuiWindow) {
             int display_w, display_h;
             glfwGetFramebufferSize(window, &display_w, &display_h);
-            float windowWidth = display_w * 0.2f;
-            float windowHeight = display_h * 0.3f;
+            float windowWidth = display_w * 0.35f;
+            float windowHeight = display_h * 0.4f;
             // Set position to bottom-right
             ImVec2 windowPos = ImVec2(10,10);
             ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
             ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
             ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
-            ImGui::Begin("Scene Controls", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+            ImGui::Begin("Editor", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
             ImGui::Text("Use keyboard: Tab/Arrows/Enter");
             ImGui::ColorEdit3("Window Color", clear_color);
-            ImGui::SliderFloat3("Light Position", glm::value_ptr(lightPos), -10.0f, 10.0f);
+            glm::vec3 lightPos = pointLightPositions[0];
+            ImGui::SliderFloat3("Point Light Position", glm::value_ptr(lightPos), -10.0f, 10.0f); -10.0f, 10.0f;
+            ImGui::Checkbox("Directional Light", &useDirLight);
+            ImGui::Checkbox("Point Lights", &usePointLights);
+            ImGui::Checkbox("Spotlight", &useSpotLight);
             ImGui::SliderFloat("Shininess", &shininess, 1.0f, 256.0f);
             //ImGui::ColorEdit3("Light Color", glm::value_ptr(lightColor));
             ImGui::SliderFloat("Color Intensity", &lightIntensity, 0.0f, 10.0f);
@@ -341,6 +303,7 @@ int main()
             ImGui::Combo("Model", &currentModelIndex, modelNames, IM_ARRAYSIZE(modelNames));
             ImGui::End();
         }
+        pointLightPositions[0] = lightPos;
 
         // Clear screen
         glClearColor(clear_color[0], clear_color[1], clear_color[2], clear_color[3]);
@@ -351,6 +314,9 @@ int main()
         lightingShader.use();
         //lightingShader.setVec3("lightColor", lightColor); // Modulated intensity
         lightingShader.setFloat("lightIntensity", lightIntensity *0.1f); // Modulated intensity
+        lightingShader.setBool("useDirLight", useDirLight);
+        lightingShader.setBool("usePointLights", usePointLights);
+        lightingShader.setBool("useSpotLight", useSpotLight);
         lightingShader.setFloat("shininess", shininess);
 
         // Set lighting uniforms
