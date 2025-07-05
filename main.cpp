@@ -35,7 +35,7 @@ float lastFrame = 0.0f;
 Camera camera(glm::vec3(0.0f, 1.0f, 12.0f));
 
 // Light variables
-glm::vec3 lightPos(2.0f, 4.0f, 2.0f);
+//glm::vec3 lightPos(2.0f, 4.0f, 2.0f);
 glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 float shininess = 32.0f;
 bool useDirLight = true;
@@ -49,6 +49,7 @@ glm::vec3 pointLightPositions[] = {
     glm::vec3(2.0f, 4.0f, -2.0f),
     glm::vec3(-2.0f, 4.0f, -2.0f)
 };
+glm::vec3 lightPos = pointLightPositions[0];
 
 // ImGui
 bool showImGuiWindow = true;
@@ -281,8 +282,8 @@ int main()
         if (showImGuiWindow) {
             int display_w, display_h;
             glfwGetFramebufferSize(window, &display_w, &display_h);
-            float windowWidth = display_w * 0.35f;
-            float windowHeight = display_h * 0.4f;
+            float windowWidth = display_w * 0.3f;
+            float windowHeight = display_h * 0.32f;
             // Set position to bottom-right
             ImVec2 windowPos = ImVec2(10,10);
             ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
@@ -291,7 +292,6 @@ int main()
             ImGui::Begin("Editor", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
             ImGui::Text("Use keyboard: Tab/Arrows/Enter");
             ImGui::ColorEdit3("Window Color", clear_color);
-            glm::vec3 lightPos = pointLightPositions[0];
             ImGui::SliderFloat3("Point Light Position", glm::value_ptr(lightPos), -10.0f, 10.0f); -10.0f, 10.0f;
             ImGui::Checkbox("Directional Light", &useDirLight);
             ImGui::Checkbox("Point Lights", &usePointLights);
@@ -325,16 +325,13 @@ int main()
         lightingShader.setVec3("dirLight.diffuse", 0.1f, 0.1f, 0.1f);
         lightingShader.setVec3("dirLight.specular", 0.1f, 0.1f, 0.1f);
 
-        for (int i = 0; i < 4; i++) {
-            std::string prefix = "pointLights[" + std::to_string(i) + "].";
-            lightingShader.setVec3(prefix + "position", pointLightPositions[i]);
-            lightingShader.setVec3(prefix + "ambient", 0.05f, 0.05f, 0.05f);
-            lightingShader.setVec3(prefix + "diffuse", 0.8f, 0.8f, 0.8f);
-            lightingShader.setVec3(prefix + "specular", 1.0f, 1.0f, 1.0f);
-            lightingShader.setFloat(prefix + "constant", 1.0f);
-            lightingShader.setFloat(prefix + "linear", 0.09f);
-            lightingShader.setFloat(prefix + "quadratic", 0.032f);
-        }
+        lightingShader.setVec3("pointLights[0].position", pointLightPositions[0]);
+        lightingShader.setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
+        lightingShader.setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+        lightingShader.setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
+        lightingShader.setFloat("pointLights[0].constant", 1.0f);
+        lightingShader.setFloat("pointLights[0].linear", 0.09f);
+        lightingShader.setFloat("pointLights[0].quadratic", 0.032f);
 
         lightingShader.setVec3("spotLight.position", camera.Position);
         lightingShader.setVec3("spotLight.direction", camera.Front);
@@ -350,6 +347,7 @@ int main()
         lightingShader.setVec3("light.position", lightPos);
         lightingShader.setVec3("lightColor", lightColor);
         lightingShader.setFloat("material.shininess", shininess);
+        //std::cout << "LightPos: " << lightPos.x << ", " << lightPos.y << ", " << lightPos.z << "\n";
 
         // View/projection matrices
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -424,6 +422,7 @@ int main()
 
             sceneModel.Draw(lightingShader);
         }
+
         // Render ImGui
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

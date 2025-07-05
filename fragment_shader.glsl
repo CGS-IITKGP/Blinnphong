@@ -30,7 +30,7 @@ struct SpotLight {
     vec3 specular;
 };
 
-#define NR_POINT_LIGHTS 4
+#define NR_POINT_LIGHTS 1
 #define NUM_DIFFUSE_TEXTURES 7  // Adjust based on how many textures you load
 
 in vec3 FragPos;
