@@ -367,6 +367,7 @@ int main()
 
             // === Directional Light ===
             if (ImGui::CollapsingHeader("Directional Light")) {
+                ImGui::Checkbox("Enable Directional Light", &useDirLight);
                 ImGui::SliderFloat3("Direction", glm::value_ptr(dirLightDir), -1.0f, 1.0f);
                 ImGui::ColorEdit3("Ambient", glm::value_ptr(dirLightAmbient));
                 ImGui::ColorEdit3("Diffuse", glm::value_ptr(dirLightDiffuse));
@@ -375,6 +376,7 @@ int main()
 
             // === Point Light ===
             if (ImGui::CollapsingHeader("Point Light")) {
+                ImGui::Checkbox("Enable Point Light", &usePointLights);
                 ImGui::SliderFloat3("Position", glm::value_ptr(pointLightPos), -10.0f, 10.0f);
                 ImGui::ColorEdit3("Ambient", glm::value_ptr(pointLightAmbient));
                 ImGui::ColorEdit3("Diffuse", glm::value_ptr(pointLightDiffuse));
@@ -386,6 +388,7 @@ int main()
 
             // === Spot Light ===
             if (ImGui::CollapsingHeader("Spot Light")) {
+                ImGui::Checkbox("Enable Spot Light", &useSpotLight);
                 ImGui::ColorEdit3("Ambient", glm::value_ptr(spotLightAmbient));
                 ImGui::ColorEdit3("Diffuse", glm::value_ptr(spotLightDiffuse));
                 ImGui::ColorEdit3("Specular", glm::value_ptr(spotLightSpecular));
@@ -441,7 +444,6 @@ int main()
         lightingShader.setFloat("spotLight.quadratic", spotQuad);
         lightingShader.setFloat("spotLight.cutOff", spotCutoff);
         lightingShader.setFloat("spotLight.outerCutOff", spotOuterCutoff);
-        //std::cout << "LightPos: " << lightPos.x << ", " << lightPos.y << ", " << lightPos.z << "\n";
 
         // View/projection matrices
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
