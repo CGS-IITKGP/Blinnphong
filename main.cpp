@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -34,15 +34,7 @@ float lastFrame = 0.0f;
 // Camera instance (in processInput and mouse)
 Camera camera(glm::vec3(0.0f, 1.0f, 12.0f));
 
-// Light variables
-//glm::vec3 lightPos(2.0f, 4.0f, 2.0f);
-glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
-float shininess = 32.0f;
-bool useDirLight = true;
-bool usePointLights = true;
-bool useSpotLight = true;
-
-// Point lights positions
+// Light!!!
 glm::vec3 pointLightPositions[] = {
     glm::vec3(2.0f, 4.0f, 2.0f),
     glm::vec3(-2.0f, 4.0f, 2.0f),
@@ -50,6 +42,53 @@ glm::vec3 pointLightPositions[] = {
     glm::vec3(-2.0f, 4.0f, -2.0f)
 };
 glm::vec3 lightPos = pointLightPositions[0];
+//glm::vec3 lightPos(2.0f, 4.0f, 2.0f);
+glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+// === Directional Light Defaults ===
+glm::vec3 defaultDirLightDir = glm::vec3(-0.2f, -1.0f, -0.3f);
+glm::vec3 defaultDirLightAmbient = glm::vec3(0.01f);
+glm::vec3 defaultDirLightDiffuse = glm::vec3(0.1f);
+glm::vec3 defaultDirLightSpecular = glm::vec3(0.1f);
+
+// === Point Light Defaults ===
+glm::vec3 defaultPointLightPos = pointLightPositions[0];  // initial position
+glm::vec3 defaultPointAmbient = glm::vec3(0.05f);
+glm::vec3 defaultPointDiffuse = glm::vec3(0.8f);
+glm::vec3 defaultPointSpecular = glm::vec3(1.0f);
+float defaultPointConst = 1.0f, defaultPointLinear = 0.09f, defaultPointQuad = 0.032f;
+
+// === Spot Light Defaults ===
+glm::vec3 defaultSpotAmbient = glm::vec3(0.0f);
+glm::vec3 defaultSpotDiffuse = glm::vec3(1.0f);
+glm::vec3 defaultSpotSpecular = glm::vec3(1.0f);
+float defaultSpotConst = 1.0f, defaultSpotLinear = 0.09f, defaultSpotQuad = 0.032f;
+float defaultSpotCutoff = glm::cos(glm::radians(12.5f));
+float defaultSpotOuterCutoff = glm::cos(glm::radians(15.0f));
+
+// === Runtime Editable Copies ===
+glm::vec3 dirLightDir = defaultDirLightDir;
+glm::vec3 dirLightAmbient = defaultDirLightAmbient;
+glm::vec3 dirLightDiffuse = defaultDirLightDiffuse;
+glm::vec3 dirLightSpecular = defaultDirLightSpecular;
+
+glm::vec3 pointLightPos = defaultPointLightPos;
+glm::vec3 pointLightAmbient = defaultPointAmbient;
+glm::vec3 pointLightDiffuse = defaultPointDiffuse;
+glm::vec3 pointLightSpecular = defaultPointSpecular;
+float pointConst = defaultPointConst, pointLinear = defaultPointLinear, pointQuad = defaultPointQuad;
+
+glm::vec3 spotLightAmbient = defaultSpotAmbient;
+glm::vec3 spotLightDiffuse = defaultSpotDiffuse;
+glm::vec3 spotLightSpecular = defaultSpotSpecular;
+float spotConst = defaultSpotConst, spotLinear = defaultSpotLinear, spotQuad = defaultSpotQuad;
+float spotCutoff = defaultSpotCutoff, spotOuterCutoff = defaultSpotOuterCutoff;
+
+float shininess = 32.0f;
+float lightIntensity = 2.0f;
+
+bool useDirLight = true;
+bool usePointLights = true;
+bool useSpotLight = true;
 
 // ImGui
 bool showImGuiWindow = true;
@@ -129,6 +168,7 @@ int main()
     "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\wall.jpg",
     "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene\\Diffuse_Bake_4k.jpg",
     "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\alexander-andrews-vGCErDhrc3E-unsplash.jpg"
+    "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\moon.jpg"
     };
 
     vector<unsigned int> textureIDs(texturePaths2.size());
@@ -160,7 +200,7 @@ int main()
         }
         stbi_image_free(data);
     }
-    
+
     unsigned int sceneTextures[18];
     const char* texturePaths[] = {
         //"C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\2048_steel_stain_diffuse.jpg",
@@ -285,20 +325,80 @@ int main()
             float windowWidth = display_w * 0.3f;
             float windowHeight = display_h * 0.32f;
             // Set position to bottom-right
-            ImVec2 windowPos = ImVec2(10,10);
+            ImVec2 windowPos = ImVec2(10, 10);
             ImVec2 windowSize = ImVec2(windowWidth, windowHeight);
             ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
             ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
             ImGui::Begin("Editor", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
             ImGui::Text("Use keyboard: Tab/Arrows/Enter");
             ImGui::ColorEdit3("Window Color", clear_color);
-            ImGui::SliderFloat3("Point Light Position", glm::value_ptr(lightPos), -10.0f, 10.0f); -10.0f, 10.0f;
-            ImGui::Checkbox("Directional Light", &useDirLight);
-            ImGui::Checkbox("Point Lights", &usePointLights);
-            ImGui::Checkbox("Spotlight", &useSpotLight);
+            //ImGui::Begin("Lighting Editor");
+
+            if (ImGui::Button("Reset to Default")) {
+                // Reset all values
+                dirLightDir = defaultDirLightDir;
+                dirLightAmbient = defaultDirLightAmbient;
+                dirLightDiffuse = defaultDirLightDiffuse;
+                dirLightSpecular = defaultDirLightSpecular;
+
+                pointLightPos = defaultPointLightPos;
+                pointLightAmbient = defaultPointAmbient;
+                pointLightDiffuse = defaultPointDiffuse;
+                pointLightSpecular = defaultPointSpecular;
+                pointConst = defaultPointConst;
+                pointLinear = defaultPointLinear;
+                pointQuad = defaultPointQuad;
+
+                spotLightAmbient = defaultSpotAmbient;
+                spotLightDiffuse = defaultSpotDiffuse;
+                spotLightSpecular = defaultSpotSpecular;
+                spotConst = defaultSpotConst;
+                spotLinear = defaultSpotLinear;
+                spotQuad = defaultSpotQuad;
+                spotCutoff = defaultSpotCutoff;
+                spotOuterCutoff = defaultSpotOuterCutoff;
+
+                shininess = 32.0f;
+                lightIntensity = 2.0f;
+                useDirLight = true;
+                usePointLights = true;
+                useSpotLight = true;
+            }
+
+            // === Directional Light ===
+            if (ImGui::CollapsingHeader("Directional Light")) {
+                ImGui::SliderFloat3("Direction", glm::value_ptr(dirLightDir), -1.0f, 1.0f);
+                ImGui::ColorEdit3("Ambient", glm::value_ptr(dirLightAmbient));
+                ImGui::ColorEdit3("Diffuse", glm::value_ptr(dirLightDiffuse));
+                ImGui::ColorEdit3("Specular", glm::value_ptr(dirLightSpecular));
+            }
+
+            // === Point Light ===
+            if (ImGui::CollapsingHeader("Point Light")) {
+                ImGui::SliderFloat3("Position", glm::value_ptr(pointLightPos), -10.0f, 10.0f);
+                ImGui::ColorEdit3("Ambient", glm::value_ptr(pointLightAmbient));
+                ImGui::ColorEdit3("Diffuse", glm::value_ptr(pointLightDiffuse));
+                ImGui::ColorEdit3("Specular", glm::value_ptr(pointLightSpecular));
+                ImGui::SliderFloat("Constant", &pointConst, 0.0f, 2.0f);
+                ImGui::SliderFloat("Linear", &pointLinear, 0.0f, 1.0f);
+                ImGui::SliderFloat("Quadratic", &pointQuad, 0.0f, 1.0f);
+            }
+
+            // === Spot Light ===
+            if (ImGui::CollapsingHeader("Spot Light")) {
+                ImGui::ColorEdit3("Ambient", glm::value_ptr(spotLightAmbient));
+                ImGui::ColorEdit3("Diffuse", glm::value_ptr(spotLightDiffuse));
+                ImGui::ColorEdit3("Specular", glm::value_ptr(spotLightSpecular));
+                ImGui::SliderFloat("Constant", &spotConst, 0.0f, 2.0f);
+                ImGui::SliderFloat("Linear", &spotLinear, 0.0f, 1.0f);
+                ImGui::SliderFloat("Quadratic", &spotQuad, 0.0f, 1.0f);
+                ImGui::SliderFloat("CutOff", &spotCutoff, 0.0f, 1.0f);
+                ImGui::SliderFloat("OuterCutOff", &spotOuterCutoff, 0.0f, 1.0f);
+            }
+
             ImGui::SliderFloat("Shininess", &shininess, 1.0f, 256.0f);
-            //ImGui::ColorEdit3("Light Color", glm::value_ptr(lightColor));
-            ImGui::SliderFloat("Color Intensity", &lightIntensity, 0.0f, 10.0f);
+            ImGui::SliderFloat("Light Intensity", &lightIntensity, 0.0f, 10.0f);
+
             const char* modelNames[] = { "Castle", "Home" };
             ImGui::Combo("Model", &currentModelIndex, modelNames, IM_ARRAYSIZE(modelNames));
             ImGui::End();
@@ -312,41 +412,35 @@ int main()
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         // Activate shader
         lightingShader.use();
-        //lightingShader.setVec3("lightColor", lightColor); // Modulated intensity
-        lightingShader.setFloat("lightIntensity", lightIntensity *0.1f); // Modulated intensity
+        lightingShader.setFloat("lightIntensity", lightIntensity);
         lightingShader.setBool("useDirLight", useDirLight);
         lightingShader.setBool("usePointLights", usePointLights);
         lightingShader.setBool("useSpotLight", useSpotLight);
         lightingShader.setFloat("shininess", shininess);
 
-        // Set lighting uniforms
-        lightingShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
-        lightingShader.setVec3("dirLight.ambient", 0.01f, 0.01f, 0.01f);
-        lightingShader.setVec3("dirLight.diffuse", 0.1f, 0.1f, 0.1f);
-        lightingShader.setVec3("dirLight.specular", 0.1f, 0.1f, 0.1f);
+        lightingShader.setVec3("dirLight.direction", dirLightDir);
+        lightingShader.setVec3("dirLight.ambient", dirLightAmbient);
+        lightingShader.setVec3("dirLight.diffuse", dirLightDiffuse);
+        lightingShader.setVec3("dirLight.specular", dirLightSpecular);
 
-        lightingShader.setVec3("pointLights[0].position", pointLightPositions[0]);
-        lightingShader.setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
-        lightingShader.setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
-        lightingShader.setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
-        lightingShader.setFloat("pointLights[0].constant", 1.0f);
-        lightingShader.setFloat("pointLights[0].linear", 0.09f);
-        lightingShader.setFloat("pointLights[0].quadratic", 0.032f);
+        lightingShader.setVec3("pointLights[0].position", pointLightPos);
+        lightingShader.setVec3("pointLights[0].ambient", pointLightAmbient);
+        lightingShader.setVec3("pointLights[0].diffuse", pointLightDiffuse);
+        lightingShader.setVec3("pointLights[0].specular", pointLightSpecular);
+        lightingShader.setFloat("pointLights[0].constant", pointConst);
+        lightingShader.setFloat("pointLights[0].linear", pointLinear);
+        lightingShader.setFloat("pointLights[0].quadratic", pointQuad);
 
         lightingShader.setVec3("spotLight.position", camera.Position);
         lightingShader.setVec3("spotLight.direction", camera.Front);
-        lightingShader.setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
-        lightingShader.setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-        lightingShader.setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
-        lightingShader.setFloat("spotLight.constant", 1.0f);
-        lightingShader.setFloat("spotLight.linear", 0.09f);
-        lightingShader.setFloat("spotLight.quadratic", 0.032f);
-        lightingShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-        lightingShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
-
-        lightingShader.setVec3("light.position", lightPos);
-        lightingShader.setVec3("lightColor", lightColor);
-        lightingShader.setFloat("material.shininess", shininess);
+        lightingShader.setVec3("spotLight.ambient", spotLightAmbient);
+        lightingShader.setVec3("spotLight.diffuse", spotLightDiffuse);
+        lightingShader.setVec3("spotLight.specular", spotLightSpecular);
+        lightingShader.setFloat("spotLight.constant", spotConst);
+        lightingShader.setFloat("spotLight.linear", spotLinear);
+        lightingShader.setFloat("spotLight.quadratic", spotQuad);
+        lightingShader.setFloat("spotLight.cutOff", spotCutoff);
+        lightingShader.setFloat("spotLight.outerCutOff", spotOuterCutoff);
         //std::cout << "LightPos: " << lightPos.x << ", " << lightPos.y << ", " << lightPos.z << "\n";
 
         // View/projection matrices
