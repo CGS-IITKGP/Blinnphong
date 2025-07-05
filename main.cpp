@@ -31,7 +31,7 @@ float clear_color[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-// Camera instance (in processInput and mouse)
+// Camera
 Camera camera(glm::vec3(0.0f, 1.0f, 12.0f));
 
 // Light!!!
@@ -44,20 +44,20 @@ glm::vec3 pointLightPositions[] = {
 glm::vec3 lightPos = pointLightPositions[0];
 //glm::vec3 lightPos(2.0f, 4.0f, 2.0f);
 glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
-// === Directional Light Defaults ===
+// Directional Light Defaults 
 glm::vec3 defaultDirLightDir = glm::vec3(-0.2f, -1.0f, -0.3f);
 glm::vec3 defaultDirLightAmbient = glm::vec3(0.01f);
 glm::vec3 defaultDirLightDiffuse = glm::vec3(0.1f);
 glm::vec3 defaultDirLightSpecular = glm::vec3(0.1f);
 
-// === Point Light Defaults ===
+// Point Light Default
 glm::vec3 defaultPointLightPos = pointLightPositions[0];  // initial position
 glm::vec3 defaultPointAmbient = glm::vec3(0.05f);
 glm::vec3 defaultPointDiffuse = glm::vec3(0.8f);
 glm::vec3 defaultPointSpecular = glm::vec3(1.0f);
 float defaultPointConst = 1.0f, defaultPointLinear = 0.09f, defaultPointQuad = 0.032f;
 
-// === Spot Light Defaults ===
+// Spot Light Defaults
 glm::vec3 defaultSpotAmbient = glm::vec3(0.0f);
 glm::vec3 defaultSpotDiffuse = glm::vec3(1.0f);
 glm::vec3 defaultSpotSpecular = glm::vec3(1.0f);
@@ -335,7 +335,7 @@ int main()
             //ImGui::Begin("Lighting Editor");
 
             if (ImGui::Button("Reset to Default")) {
-                // Reset all values
+                // dEFAULT VALUES
                 dirLightDir = defaultDirLightDir;
                 dirLightAmbient = defaultDirLightAmbient;
                 dirLightDiffuse = defaultDirLightDiffuse;
@@ -471,7 +471,7 @@ int main()
         // Draw model
         if (currentModelIndex == 0) {
             for (auto& mesh : castleModel.meshes) {
-                mesh.textures.clear(); // Clear previous textures
+                mesh.textures.clear();
 
                 for (int i = 0; i < textureIDs.size(); ++i) {
                     glActiveTexture(GL_TEXTURE0 + i);
@@ -479,11 +479,10 @@ int main()
 
                     Texture tex;
                     tex.id = textureIDs[i];
-                    tex.type = "texture_diffuse"; // or "texture_specular", etc.
-                    tex.path = texturePaths[i];   // optional if needed
+                    tex.type = "texture_diffuse"; 
+                    tex.path = texturePaths[i];  
                     mesh.textures.push_back(tex);
 
-                    // Tell the shader which texture unit this texture is bound to
                     std::string uniformName = "texture" + std::to_string(i + 1);
                     lightingShader.setInt(uniformName.c_str(), i);
                 }
@@ -492,24 +491,9 @@ int main()
             castleModel.Draw(lightingShader);
         }
         else if (currentModelIndex == 1) {
-            //glActiveTexture(GL_TEXTURE0);  // Set active texture unit before binding
-            //glBindTexture(GL_TEXTURE_2D, textureID);  // Optional: bind a fallback/base texture
-            //for (int i = 0; i < carModel.meshes.size(); ++i) {
-            //    carModel.meshes[i].textures.clear();
-
-            //    Texture tex;
-            //    tex.id = carTextures[i % 3]; // Cycle through 3 car-specific textures
-            //    tex.type = "texture_diffuse";  // Must match the shader's uniform type
-            //    tex.path = texturePaths[i % 3];
-
-            //    carModel.meshes[i].textures.push_back(tex);
-            //}
-
-            //carModel.Draw(lightingShader);
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, sceneTextures[0]); // Use first car texture
+            glBindTexture(GL_TEXTURE_2D, sceneTextures[0]); 
 
-            // Bind white texture to specular slot (since we don't have specular map)
             static unsigned int whiteTex = createWhiteTexture();
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, whiteTex);
