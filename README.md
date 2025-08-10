@@ -51,7 +51,7 @@
 <!-- UPDATE -->
 <div align="center">
   <a href="https://github.com/Jasz-rgb/Blinnphong">
-    <img width="80%" alt="image" src="https://user-images.githubusercontent.com/86282911/206632547-a3b34b47-e7ae-4186-a1e6-ecda7ddb38e6.png">
+    <img width="80%" alt="image" src="https://github.com/Jasz-rgb/Blinnphong/blob/a64d8525145e06a34187373f46dd776053fe49dc/Screenshot%202025-08-10%20234838.png">
   </a>
 </div>
 
@@ -105,11 +105,19 @@ _Now that the environment has been set up and configured to properly compile and
 <!-- USAGE EXAMPLES -->
 ## Usage
 <!-- UPDATE -->
-Use this space to show useful examples of how this project can be used. Additional screenshots, code examples and demos work well in this space.
 
 <div align="center">
   <a href="https://github.com/Jasz-rgb/Blinnphong">
-    <img width="80%" alt="image" src="">
+    <img width="80%" alt="image" src="https://github.com/Jasz-rgb/Blinnphong/blob/a64d8525145e06a34187373f46dd776053fe49dc/Screenshot%202025-08-10%20231154.png">
+  </a>
+  <a href="https://github.com/Jasz-rgb/Blinnphong">
+    <img width="80%" alt="image" src="https://github.com/Jasz-rgb/Blinnphong/blob/a64d8525145e06a34187373f46dd776053fe49dc/Screenshot%202025-08-10%20231816.png">
+  </a>
+  <a href="https://github.com/Jasz-rgb/Blinnphong">
+    <img width="80%" alt="image" src="https://github.com/Jasz-rgb/Blinnphong/blob/a64d8525145e06a34187373f46dd776053fe49dc/Screenshot%202025-08-10%20231232.png">
+  </a>
+  <a href="https://github.com/Jasz-rgb/Blinnphong">
+    <img width="80%" alt="image" src="https://github.com/Jasz-rgb/Blinnphong/blob/a64d8525145e06a34187373f46dd776053fe49dc/Screenshot%202025-08-10%20232840.png">
   </a>
 </div>
 
