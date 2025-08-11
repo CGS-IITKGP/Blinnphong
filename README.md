@@ -108,7 +108,7 @@ _Now that the environment has been set up and configured to properly compile and
 
 <div align="center">
   <a href="https://github.com/Jasz-rgb/Blinnphong">
-    <img width="40%" alt="image" src="https://github.com/Jasz-rgb/Blinnphong/blob/a64d8525145e06a34187373f46dd776053fe49dc/Screenshot%202025-08-10%20231816.png">
+    <img width="40%" alt="image" src="https://github.com/CGS-IITKGP/Blinnphong/blob/dfbc74495e7caf232fdde55ebeffdabd9906af4b/Screenshot%202025-08-10%20231154.png">
   </a>
   <a href="https://github.com/Jasz-rgb/Blinnphong">
     <img width="40%" alt="image" src="https://github.com/Jasz-rgb/Blinnphong/blob/a64d8525145e06a34187373f46dd776053fe49dc/Screenshot%202025-08-10%20231232.png">
