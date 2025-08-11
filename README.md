@@ -17,7 +17,7 @@
 <!-- UPDATE -->
 <div align="center">
   <a href="https://github.com/Jasz-rgb/Blinnphong">
-     <img width="140" alt="image" src="https://github.com/CGS-IITKGP/Blinnphong/blob/30a6937532a03b68edf5d6b664aedade6ee0435c/Screenshot%202025-08-10%20231816.png">
+     <img width="240" alt="image" src="https://github.com/CGS-IITKGP/Blinnphong/blob/30a6937532a03b68edf5d6b664aedade6ee0435c/Screenshot%202025-08-10%20231816.png">
   </a>
 
   <h3 align="center">Blinn–Phong Lighting with OpenGL + ImGui</h3>
@@ -116,7 +116,10 @@ _Now that the environment has been set up and configured to properly compile and
   <a href="https://github.com/Jasz-rgb/Blinnphong">
     <img width="40%" alt="image" src="https://github.com/Jasz-rgb/Blinnphong/blob/a64d8525145e06a34187373f46dd776053fe49dc/Screenshot%202025-08-10%20232840.png">
   </a>
-</div>
+  <a href="https://github.com/Jasz-rgb/Blinnphong">
+    <img width="40%" alt="image" src="https://github.com/CGS-IITKGP/Blinnphong/blob/3777b0c51a75ba2eb1b683737d13de1c2a8ebd3a/Screenshot%202025-08-11%20091051.png">
+  </a>
+</div> 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
