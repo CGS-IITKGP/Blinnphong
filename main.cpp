@@ -165,10 +165,10 @@ int main()
     float lightIntensity = 1.0f;
 
     vector<string> texturePaths2 = {
-    "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\wall.jpg",
-    "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene\\Diffuse_Bake_4k.jpg",
-    "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\alexander-andrews-vGCErDhrc3E-unsplash.jpg"
-    "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\moon.jpg"
+        "assets/wall.jpg",
+        "assets/Scene/Diffuse_Bake_4k.jpg",
+        "assets/alexander-andrews-vGCErDhrc3E-unsplash.jpg",
+        "assets/moon.jpg"
     };
 
     vector<unsigned int> textureIDs(texturePaths2.size());
@@ -203,37 +203,37 @@ int main()
 
     unsigned int sceneTextures[18];
     const char* texturePaths[] = {
-        //"C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\2048_steel_stain_diffuse.jpg",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\BricksLongThinRunningExtruded001_COL_2K_METALNESS.png",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\Classic Window v4_BaseColor.1001.png",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\Classical Window v3_BaseColor.1001.png",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\Classical Window7_BaseColor.png",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\Dirtyemptypot_color.png",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\download.jpg",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\concrete_wall_diffuse.png",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\door2_15_BaseColor.jpg",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\Lamp_2_BaseColor.jpg",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\Mansion Door_BaseColor.jpg",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\Material_BaseColor.jpg",
-        //"C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene\\height_Out.jpg",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\Image_2.jpg",
-        //"C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene\\Mossy Ground_height.jpg",
-        //"C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene\\Mossy Ground_normal.jpg",
-        //"C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene\\Mossy Ground_roughness.jpg",
-        //"C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\StuccoIndoor_GLOSS_1K.tif",
-        //"C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene\\Mud_height.jpg",
-        //"C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene\\Mud_normal.jpg",
-        //"C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene\\Mud_roughness.jpg",
-        //"C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene\\Normals_Out.jpg",
-        //"C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\StuccoIndoor_NRM_1K.tif",
-        //"C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\TexturesCom_Stucco1_1024_normal.tif",
-        //"C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\TexturesCom_Stucco1_1024_roughness.tif",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\deadleaves.png",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\Autumn leaves.png",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\Previrew_var1.jpg",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\tree_bark_19_color.png",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\Screenshot 2025-05-17 234126.png",
-        "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\vecteezy_a-group-of-trees-in-the-middle-of-a-field_51765352.png",
+        // "assets/Scene2/2048_steel_stain_diffuse.jpg",
+        "assets/Scene2/BricksLongThinRunningExtruded001_COL_2K_METALNESS.png",
+        "assets/Scene2/Classic Window v4_BaseColor.1001.png",
+        "assets/Scene2/Classical Window v3_BaseColor.1001.png",
+        "assets/Scene2/Classical Window7_BaseColor.png",
+        "assets/Scene2/Dirtyemptypot_color.png",
+        "assets/Scene2/download.jpg",
+        "assets/Scene2/concrete_wall_diffuse.png",
+        "assets/Scene2/door2_15_BaseColor.jpg",
+        "assets/Scene2/Lamp_2_BaseColor.jpg",
+        "assets/Scene2/Mansion Door_BaseColor.jpg",
+        "assets/Scene2/Material_BaseColor.jpg",
+        // "assets/Scene/height_Out.jpg",
+        "assets/Scene2/Image_2.jpg",
+        // "assets/Scene/Mossy Ground_height.jpg",
+        // "assets/Scene/Mossy Ground_normal.jpg",
+        // "assets/Scene/Mossy Ground_roughness.jpg",
+        // "assets/Scene2/StuccoIndoor_GLOSS_1K.tif",
+        // "assets/Scene/Mud_height.jpg",
+        // "assets/Scene/Mud_normal.jpg",
+        // "assets/Scene/Mud_roughness.jpg",
+        // "assets/Scene/Normals_Out.jpg",
+        // "assets/Scene2/StuccoIndoor_NRM_1K.tif",
+        // "assets/Scene2/TexturesCom_Stucco1_1024_normal.tif",
+        // "assets/Scene2/TexturesCom_Stucco1_1024_roughness.tif",
+        "assets/Scene2/deadleaves.png",
+        "assets/Scene2/Autumn leaves.png",
+        "assets/Scene2/Previrew_var1.jpg",
+        "assets/Scene2/tree_bark_19_color.png",
+        "assets/Scene2/Screenshot 2025-05-17 234126.png",
+        "assets/Scene2/vecteezy_a-group-of-trees-in-the-middle-of-a-field_51765352.png"
     };
     glGenTextures(18, sceneTextures);
     for (int i = 0; i < 18; ++i) {
@@ -271,21 +271,26 @@ int main()
         cout << "pew";
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
-    cout << "pew";
-    // Loading  model
-    Model castleModel("C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\utubecastle.fbx");
-    cout << "pew";
+cout << "pew";
+// Loading model
+Model castleModel("assets/utubecastle.fbx");
+cout << "pew";
 
-    Model sceneModel("C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\Scene2\\House_topengl.fbx");
-    cout << "pew";
+Model sceneModel("assets/Scene2/House_topengl.fbx");
+cout << "pew";
 
-    if (castleModel.meshes.empty()) std::cerr << "castleModel failed to load!" << std::endl;
-    if (sceneModel.meshes.empty()) std::cerr << "sceneModel failed to load!" << std::endl;
-    cout << "Loading model: " << "C:\\Users\\JASMINE\\Desktop\\Blinnphong\\assets\\utubtecastle.fbx" << std::endl;
-    int currentModelIndex = 0;
-    if (sceneModel.meshes.empty()) {
-        std::cerr << "sceneModel has no meshes loaded!" << std::endl;
-    }
+if (castleModel.meshes.empty()) 
+    std::cerr << "castleModel failed to load!" << std::endl;
+if (sceneModel.meshes.empty()) 
+    std::cerr << "sceneModel failed to load!" << std::endl;
+
+cout << "Loading model: " << "assets/utubecastle.fbx" << std::endl;
+
+int currentModelIndex = 0;
+
+if (sceneModel.meshes.empty()) {
+    std::cerr << "sceneModel has no meshes loaded!" << std::endl;
+}
     // Model transform controls for ImGui
     glm::vec3 modelPosition(0.0f);
     glm::vec3 modelRotation(0.0f);

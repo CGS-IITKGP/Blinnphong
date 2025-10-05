@@ -39,24 +39,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Imgui\imgui.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Imgui\imgui_draw.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Imgui\backends\imgui_impl_glfw.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Imgui\backends\imgui_impl_opengl3.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Imgui\imgui_tables.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Imgui\imgui_widgets.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
     <ClCompile Include="camera.cpp">
       <Filter>Source Files\setup</Filter>
     </ClCompile>
@@ -75,6 +57,24 @@
     <ClCompile Include="mesh.cpp">
       <Filter>Source Files\setup</Filter>
     </ClCompile>
+    <ClCompile Include="include\Imgui\imgui.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Imgui\imgui_draw.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Imgui\imgui_tables.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Imgui\imgui_widgets.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Imgui\backends\imgui_impl_glfw.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Imgui\backends\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="vertex_shader.glsl">
@@ -87,21 +87,6 @@
   <ItemGroup>
     <ClInclude Include="shader.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Imgui\imconfig.h">
-      <Filter>Header Files\imgui_h</Filter>
-    </ClInclude>
-    <ClInclude Include="Imgui\imgui.h">
-      <Filter>Header Files\imgui_h</Filter>
-    </ClInclude>
-    <ClInclude Include="Imgui\backends\imgui_impl_glfw.h">
-      <Filter>Header Files\imgui_h</Filter>
-    </ClInclude>
-    <ClInclude Include="Imgui\backends\imgui_impl_opengl3.h">
-      <Filter>Header Files\imgui_h</Filter>
-    </ClInclude>
-    <ClInclude Include="Imgui\imgui_internal.h">
-      <Filter>Header Files\imgui_h</Filter>
     </ClInclude>
     <ClInclude Include="camera.h">
       <Filter>Header Files\setup_h</Filter>
@@ -117,6 +102,21 @@
     </ClInclude>
     <ClInclude Include="model.h">
       <Filter>Header Files\setup_h</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Imgui\imconfig.h">
+      <Filter>Header Files\imgui_h</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Imgui\imgui.h">
+      <Filter>Header Files\imgui_h</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Imgui\imgui_internal.h">
+      <Filter>Header Files\imgui_h</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Imgui\backends\imgui_impl_opengl3.h">
+      <Filter>Header Files\imgui_h</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Imgui\backends\imgui_impl_glfw.h">
+      <Filter>Header Files\imgui_h</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
