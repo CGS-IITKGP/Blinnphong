@@ -96,13 +96,13 @@ You just need to build and run the executable.
 ## Usage
 <!-- UPDATE -->
 Once the project is running:
-> Use **WASD** keys to move the light source in 3D space.
-> Use the **ImGui** **panel** to:
-  > Switch between lighting types (directional, point, or spot).
-  > Modify ambient, diffuse, and specular intensity.
-  > Change light color and shininess values.
-  > Load different 3D models dynamically.
-> Observe how the Blinn–Phong lighting model affects different surfaces and materials.
+- Use **WASD** keys to move the light source in 3D space.
+- Use the **ImGui** **panel** to:
+  - Switch between lighting types (directional, point, or spot).
+  - Modify ambient, diffuse, and specular intensity.
+  - Change light color and shininess values.
+  - Load different 3D models dynamically.
+- Observe how the Blinn–Phong lighting model affects different surfaces and materials.
 
 <div align="center">
   <a href="https://github.com/Jasz-rgb/Blinnphong">
