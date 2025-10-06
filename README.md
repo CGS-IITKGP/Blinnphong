@@ -14,87 +14,77 @@
 
 <!-- PROJECT LOGO -->
 <br />
-<!-- UPDATE -->
 <div align="center">
   <a href="https://github.com/Jasz-rgb/Blinnphong">
-     <img width="340" alt="image" src="https://github.com/CGS-IITKGP/Blinnphong/blob/30a6937532a03b68edf5d6b664aedade6ee0435c/Screenshot%202025-08-10%20231816.png">
+     <img width="340" alt="Blinn-Phong Screenshot" src="https://github.com/CGS-IITKGP/Blinnphong/blob/30a6937532a03b68edf5d6b664aedade6ee0435c/Screenshot%202025-08-10%20231816.png">
   </a>
 
   <h3 align="center">Blinn–Phong Lighting with OpenGL + ImGui</h3>
 
   <p align="center">
-  <!-- UPDATE -->
     <i>Interactive real-time lighting control for imported Blender 3D models</i>
   </p>
 </div>
 
+---
 
-<!-- TABLE OF CONTENTS -->
 <details>
 <summary>Table of Contents</summary>
 
 - [About The Project](#about-the-project)
 - [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
   - [Installation](#installation)
 - [Usage](#usage)
 - [Contact](#contact)
   - [Maintainer(s)](#maintainers)
-  - [creators(s)](#creators)
-- [Additional documentation](#additional-documentation)
+  - [Creator(s)](#creators)
+- [Additional Documentation](#additional-documentation)
 
 </details>
 
+---
 
-<!-- ABOUT THE PROJECT -->
 ## About The Project
-<!-- UPDATE -->
+
 <div align="center">
   <a href="https://github.com/Jasz-rgb/Blinnphong">
-    <img width="80%" alt="image" src="https://github.com/Jasz-rgb/Blinnphong/blob/a64d8525145e06a34187373f46dd776053fe49dc/Screenshot%202025-08-10%20234838.png">
+    <img width="80%" alt="Preview" src="https://github.com/Jasz-rgb/Blinnphong/blob/a64d8525145e06a34187373f46dd776053fe49dc/Screenshot%202025-08-10%20234838.png">
   </a>
 </div>
 
-This project demonstrates **user-interactive Blinn–Phong lighting** in OpenGL with **ImGui-based controls** for real-time tweaking of light type, lighting parameters, and model selection.  It supports **WASD-controlled light movement** for dynamic inspection of lighting effects and renders Blender-imported 3D models (e.g., `Castle` and `House` models).  Integrated ImGui for real-time tweaking of light type, lighting parameters, and model selection.
+This project demonstrates **interactive Blinn–Phong lighting** in OpenGL, featuring **real-time ImGui controls** for lighting parameters, material properties, and model selection.  
+It provides a fully **dependency-free experience** — all required headers and libraries are already integrated.  
+
+### ✨ Key Features
+- Pure **C++ + OpenGL** implementation — *no external installations required*  
+- **ImGui-powered controls** for real-time tweaking of light color, position, and shininess  
+- **WASD-controlled light movement** to observe reflections from multiple angles  
+- **Multiple imported Blender models** (Castle, House, etc.) for lighting visualization  
+- Organized CMake-based build system  
+- Clean structure for extension into advanced shading models  
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+---
 
 ## Getting Started
 
-To set up a local instance of the application, follow the steps below.
-
-### Prerequisites
-* Install [GLFW](https://www.glfw.org/download.html)
-* Install [GLAD](https://glad.dav1d.de/)
-* Install [glm](https://github.com/g-truc/glm)
-* Install [Assimp](https://github.com/assimp/assimp)
-* Install [stb_image.h](https://github.com/nothings/stb)
-* Install [ImGui](https://github.com/ocornut/imgui)
-
-The following dependencies are required to be installed for the project to function properly:
-<!-- UPDATE -->
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-<p align="right">(<a href="#top">back to top</a>)</p>
+This project is now **completely dependency-free** — all the required third-party libraries (GLFW, GLAD, GLM, stb_image, Assimp, ImGui) are already configured in the repository.  
+You just need to build and run the executable.
 
 ### Installation
 
-_Now that the environment has been set up and configured to properly compile and run the project, the next step is to install and configure the project locally on your system._
-<!-- UPDATE -->
-1. Clone the repository
-   ```sh
+1. **Clone the repository**
+   ```bash
    git clone https://github.com/Jasz-rgb/Blinnphong.git
    ```
-2. Make the script executable
+2. **Build the Project**
    ```sh
    mkdir build && cd build
    cmake ..
    make
    ```
-3. Execute the script
+3. **Run the script**
    ```sh
    ./Blinnphong
    ```
