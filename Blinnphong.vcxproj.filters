@@ -83,6 +83,7 @@
     <None Include="fragment_shader.glsl">
       <Filter>shaders</Filter>
     </None>
+    <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.h">
