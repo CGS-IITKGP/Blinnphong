@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -16,108 +12,118 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{8df47fae-21e1-4476-95c8-a8312d6b3e9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\imgui">
-      <UniqueIdentifier>{8fe2c8bb-35fb-423f-885b-252a5462084a}</UniqueIdentifier>
+    <Filter Include="external">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Source Files\setup">
-      <UniqueIdentifier>{6693ac6d-75ef-45e4-a009-db7e16f90941}</UniqueIdentifier>
+    <Filter Include="external\glad">
+      <UniqueIdentifier>{a2527809-a638-4b0a-ac72-21657c53107e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\imgui_h">
-      <UniqueIdentifier>{ea9d8d77-a83d-49e6-ac34-50fd471af34b}</UniqueIdentifier>
+    <Filter Include="external\imgui">
+      <UniqueIdentifier>{39d1bb2a-5b07-4d96-80b7-12d162253bcc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\setup_h">
-      <UniqueIdentifier>{ca95603b-50d7-40be-a453-30bc4f05cab5}</UniqueIdentifier>
+    <Filter Include="external\imgui\backends">
+      <UniqueIdentifier>{ddccb323-9d5d-4c79-8216-9e6124849766}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="shaderclass.cpp">
+    <ClCompile Include="src\camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\light_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="camera.cpp">
-      <Filter>Source Files\setup</Filter>
+    <ClCompile Include="src\main2.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mouse.cpp">
-      <Filter>Source Files\setup</Filter>
+    <ClCompile Include="src\mesh.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="processInput.cpp">
-      <Filter>Source Files\setup</Filter>
+    <ClCompile Include="src\model.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stb_image_imp.cpp">
-      <Filter>Source Files\setup</Filter>
+    <ClCompile Include="src\mouse.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>Source Files\setup</Filter>
+    <ClCompile Include="src\processInput.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mesh.cpp">
-      <Filter>Source Files\setup</Filter>
+    <ClCompile Include="src\shaderclass.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\Imgui\imgui.cpp">
-      <Filter>Source Files\imgui</Filter>
+    <ClCompile Include="src\stb_image_imp.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\Imgui\imgui_draw.cpp">
-      <Filter>Source Files\imgui</Filter>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\Imgui\imgui_tables.cpp">
-      <Filter>Source Files\imgui</Filter>
+    <ClCompile Include="external\Imgui\imgui.cpp">
+      <Filter>external\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="include\Imgui\imgui_widgets.cpp">
-      <Filter>Source Files\imgui</Filter>
+    <ClCompile Include="external\Imgui\imgui_draw.cpp">
+      <Filter>external\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="include\Imgui\backends\imgui_impl_glfw.cpp">
-      <Filter>Source Files\imgui</Filter>
+    <ClCompile Include="external\Imgui\imgui_tables.cpp">
+      <Filter>external\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="include\Imgui\backends\imgui_impl_opengl3.cpp">
-      <Filter>Source Files\imgui</Filter>
+    <ClCompile Include="external\Imgui\imgui_widgets.cpp">
+      <Filter>external\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="external\Imgui\backends\imgui_impl_glfw.cpp">
+      <Filter>external\imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="external\Imgui\backends\imgui_impl_opengl3.cpp">
+      <Filter>external\imgui\backends</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vertex_shader.glsl">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="fragment_shader.glsl">
-      <Filter>shaders</Filter>
-    </None>
     <None Include=".gitignore" />
+    <None Include="external\Imgui\imgui.ini">
+      <Filter>external\imgui</Filter>
+    </None>
+    <None Include="shaders\fragment_shader.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\vertex_shader.glsl">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="shader.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="external\glad\gl.h">
+      <Filter>external\glad</Filter>
     </ClInclude>
-    <ClInclude Include="camera.h">
-      <Filter>Header Files\setup_h</Filter>
+    <ClInclude Include="external\glad\glad.h">
+      <Filter>external\glad</Filter>
     </ClInclude>
-    <ClInclude Include="processInput.h">
-      <Filter>Header Files\setup_h</Filter>
+    <ClInclude Include="external\Imgui\imconfig.h">
+      <Filter>external\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="mouse.h">
-      <Filter>Header Files\setup_h</Filter>
+    <ClInclude Include="external\Imgui\imgui.h">
+      <Filter>external\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="mesh.h">
-      <Filter>Header Files\setup_h</Filter>
+    <ClInclude Include="external\Imgui\imgui_internal.h">
+      <Filter>external\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>Header Files\setup_h</Filter>
+    <ClInclude Include="external\Imgui\imstb_rectpack.h">
+      <Filter>external\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="include\Imgui\imconfig.h">
-      <Filter>Header Files\imgui_h</Filter>
+    <ClInclude Include="external\Imgui\imstb_textedit.h">
+      <Filter>external\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="include\Imgui\imgui.h">
-      <Filter>Header Files\imgui_h</Filter>
+    <ClInclude Include="external\Imgui\imstb_truetype.h">
+      <Filter>external\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="include\Imgui\imgui_internal.h">
-      <Filter>Header Files\imgui_h</Filter>
+    <ClInclude Include="external\Imgui\backends\imgui_impl_glfw.h">
+      <Filter>external\imgui\backends</Filter>
     </ClInclude>
-    <ClInclude Include="include\Imgui\backends\imgui_impl_opengl3.h">
-      <Filter>Header Files\imgui_h</Filter>
+    <ClInclude Include="external\Imgui\backends\imgui_impl_opengl3.h">
+      <Filter>external\imgui\backends</Filter>
     </ClInclude>
-    <ClInclude Include="include\Imgui\backends\imgui_impl_glfw.h">
-      <Filter>Header Files\imgui_h</Filter>
+    <ClInclude Include="external\Imgui\backends\imgui_impl_opengl3_loader.h">
+      <Filter>external\imgui\backends</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

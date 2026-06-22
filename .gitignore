@@ -10,8 +10,17 @@ CMakeFiles/
 
 # OpenGL runtime binaries
 *.exe
+*.vcxproj.user
 
-# Optional
+assets/test
+include/imgui/imgui.ini
+shaders/light_fs.glsl
+shaders/light_vs.glsl
+shaders/lightcube_fs.glsl
+shaders/lightcube_vs.glsl
+123assets
+external
+libs
 compile_commands.json
 
 # User-specific files
@@ -60,7 +69,6 @@ Generated\ Files/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
-
 # Build Results of an ATL Project
 [Dd]ebugPS/
 [Rr]eleasePS/

@@ -92,7 +92,7 @@ bool useSpotLight = true;
 
 // ImGui
 bool showImGuiWindow = true;
-const char* scenes[] = { "Castle", "Other" };
+const char* scenes[] = { "Castle", "House" };
 int scene_type = 0;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -157,7 +157,7 @@ int main()
     ImGui_ImplOpenGL3_Init("#version 330");
     cout << " imgui " << endl;
     // shaders
-    Shader lightingShader("vertex_shader.glsl", "fragment_shader.glsl");
+    Shader lightingShader("./shaders/vertex_shader.glsl", "./shaders/fragment_shader.glsl");
     lightingShader.use();
     lightingShader.setInt("diffuseMap", 0);
     lightingShader.setInt("specularMap", 1);
@@ -271,26 +271,26 @@ int main()
         cout << "pew";
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
-cout << "pew";
-// Loading model
-Model castleModel("assets/utubecastle.fbx");
-cout << "pew";
+    cout << "pew";
+    // Loading model
+    Model castleModel("assets/utubecastle.fbx");
+    cout << "pew";
 
-Model sceneModel("assets/Scene2/House_topengl.fbx");
-cout << "pew";
+    Model sceneModel("assets/Scene2/House_topengl.fbx");
+    cout << "pew";
 
-if (castleModel.meshes.empty()) 
-    std::cerr << "castleModel failed to load!" << std::endl;
-if (sceneModel.meshes.empty()) 
-    std::cerr << "sceneModel failed to load!" << std::endl;
+    if (castleModel.meshes.empty())
+        std::cerr << "castleModel failed to load!" << std::endl;
+    if (sceneModel.meshes.empty())
+        std::cerr << "sceneModel failed to load!" << std::endl;
 
-cout << "Loading model: " << "assets/utubecastle.fbx" << std::endl;
+    cout << "Loading model: " << "assets/utubecastle.fbx" << std::endl;
 
-int currentModelIndex = 0;
+    int currentModelIndex = 0;
 
-if (sceneModel.meshes.empty()) {
-    std::cerr << "sceneModel has no meshes loaded!" << std::endl;
-}
+    if (sceneModel.meshes.empty()) {
+        std::cerr << "sceneModel has no meshes loaded!" << std::endl;
+    }
     // Model transform controls for ImGui
     glm::vec3 modelPosition(0.0f);
     glm::vec3 modelRotation(0.0f);
@@ -486,8 +486,8 @@ if (sceneModel.meshes.empty()) {
 
                     Texture tex;
                     tex.id = textureIDs[i];
-                    tex.type = "texture_diffuse"; 
-                    tex.path = texturePaths[i];  
+                    tex.type = "texture_diffuse";
+                    tex.path = texturePaths[i];
                     mesh.textures.push_back(tex);
 
                     std::string uniformName = "texture" + std::to_string(i + 1);
@@ -499,7 +499,7 @@ if (sceneModel.meshes.empty()) {
         }
         else if (currentModelIndex == 1) {
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, sceneTextures[0]); 
+            glBindTexture(GL_TEXTURE_2D, sceneTextures[0]);
 
             static unsigned int whiteTex = createWhiteTexture();
             glActiveTexture(GL_TEXTURE1);
