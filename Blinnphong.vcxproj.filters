@@ -22,21 +22,12 @@
     <Filter Include="external\imgui">
       <UniqueIdentifier>{39d1bb2a-5b07-4d96-80b7-12d162253bcc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="external\imgui\backends">
-      <UniqueIdentifier>{ddccb323-9d5d-4c79-8216-9e6124849766}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\light_main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\mesh.cpp">
@@ -60,70 +51,76 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="external\Imgui\imgui.cpp">
+    <ClCompile Include="dependencies\external\Imgui\imgui.cpp">
       <Filter>external\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="external\Imgui\imgui_draw.cpp">
+    <ClCompile Include="dependencies\external\Imgui\imgui_draw.cpp">
       <Filter>external\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="external\Imgui\imgui_tables.cpp">
+    <ClCompile Include="dependencies\external\Imgui\imgui_tables.cpp">
       <Filter>external\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="external\Imgui\imgui_widgets.cpp">
+    <ClCompile Include="dependencies\external\Imgui\imgui_widgets.cpp">
       <Filter>external\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="external\Imgui\backends\imgui_impl_glfw.cpp">
-      <Filter>external\imgui\backends</Filter>
+    <ClCompile Include="dependencies\external\Imgui\backends\imgui_impl_glfw.cpp">
+      <Filter>external\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="external\Imgui\backends\imgui_impl_opengl3.cpp">
-      <Filter>external\imgui\backends</Filter>
+    <ClCompile Include="dependencies\external\Imgui\backends\imgui_impl_opengl3.cpp">
+      <Filter>external\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
-    <None Include="external\Imgui\imgui.ini">
-      <Filter>external\imgui</Filter>
-    </None>
     <None Include="shaders\fragment_shader.glsl">
       <Filter>shaders</Filter>
     </None>
     <None Include="shaders\vertex_shader.glsl">
       <Filter>shaders</Filter>
     </None>
+    <None Include="dependencies\external\Imgui\imgui.ini">
+      <Filter>external\imgui</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="external\glad\gl.h">
+    <ClInclude Include="dependencies\external\glad\gl.h">
       <Filter>external\glad</Filter>
     </ClInclude>
-    <ClInclude Include="external\glad\glad.h">
+    <ClInclude Include="dependencies\external\glad\glad.h">
       <Filter>external\glad</Filter>
     </ClInclude>
-    <ClInclude Include="external\Imgui\imconfig.h">
+    <ClInclude Include="dependencies\external\Imgui\imconfig.h">
       <Filter>external\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="external\Imgui\imgui.h">
+    <ClInclude Include="dependencies\external\Imgui\imgui.h">
       <Filter>external\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="external\Imgui\imgui_internal.h">
+    <ClInclude Include="dependencies\external\Imgui\imgui_internal.h">
       <Filter>external\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="external\Imgui\imstb_rectpack.h">
+    <ClInclude Include="dependencies\external\Imgui\imstb_rectpack.h">
       <Filter>external\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="external\Imgui\imstb_textedit.h">
+    <ClInclude Include="dependencies\external\Imgui\imstb_textedit.h">
       <Filter>external\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="external\Imgui\imstb_truetype.h">
+    <ClInclude Include="dependencies\external\Imgui\imstb_truetype.h">
       <Filter>external\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="external\Imgui\backends\imgui_impl_glfw.h">
-      <Filter>external\imgui\backends</Filter>
+    <ClInclude Include="dependencies\external\Imgui\backends\imgui_impl_glfw.h">
+      <Filter>external\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="external\Imgui\backends\imgui_impl_opengl3.h">
-      <Filter>external\imgui\backends</Filter>
+    <ClInclude Include="dependencies\external\Imgui\backends\imgui_impl_opengl3.h">
+      <Filter>external\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="external\Imgui\backends\imgui_impl_opengl3_loader.h">
-      <Filter>external\imgui\backends</Filter>
+    <ClInclude Include="dependencies\external\Imgui\backends\imgui_impl_opengl3_loader.h">
+      <Filter>external\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mesh.h">
+      <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

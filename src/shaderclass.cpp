@@ -36,7 +36,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     }
     catch (std::ifstream::failure& e)
     {
-        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ\n";
+        std::cout << "[ERROR] SHADER::FILE_NOT_SUCCESFULLY_READ\n";
     }
 
     const char* vShaderCode = vertexCode.c_str();
@@ -54,7 +54,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     if (!success)
     {
         glGetShaderInfoLog(vertex, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cout << "[ERROR] SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
@@ -65,7 +65,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     if (!success)
     {
         glGetShaderInfoLog(fragment, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cout << "[ERROR] SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
     ID = glCreateProgram();
@@ -77,7 +77,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     if (!success)
     {
         glGetProgramInfoLog(ID, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+        std::cout << "[ERROR] SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
 
     glDeleteShader(vertex);

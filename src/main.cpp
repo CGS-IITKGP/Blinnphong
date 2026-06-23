@@ -92,17 +92,17 @@ bool useSpotLight = true;
 
 // ImGui
 bool showImGuiWindow = true;
-const char* scenes[] = { "Castle", "House" };
+const char* scenes[] = { "Castle", "Home" };
 int scene_type = 0;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 unsigned int createWhiteTexture()
 {
     unsigned int tex;
-    unsigned char whitePixel[3] = { 255, 255, 255 };
+    unsigned char whitePixel[] = { 255, 255, 255, 255 };
     glGenTextures(1, &tex);
     glBindTexture(GL_TEXTURE_2D, tex);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, whitePixel);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,1,1,0,GL_RGBA,GL_UNSIGNED_BYTE,whitePixel);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -112,7 +112,9 @@ unsigned int createWhiteTexture()
 int main()
 {
     // GLFW init
-    std::cout << " 1.start " << endl;
+    cout << "\n=====================================\n";
+    cout << "        APPLICATION START\n";
+    cout << "=====================================\n";
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -120,14 +122,14 @@ int main()
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-    cout << " 2. Window " << endl;
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Dual with ImGui setup", NULL, NULL);
     if (!window)
     {
-        std::cerr << "Failed to create GLFW window\n";
+        std::cerr << "[ERROR] Failed to create GLFW window\n";
         glfwTerminate();
         return -1;
     }
+    cout << "[OK] GLFW Initialized\n";
     glfwMakeContextCurrent(window);
 
     // Set callbacks
@@ -141,10 +143,10 @@ int main()
     // GLAD load
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        std::cerr << "Failed to initialize GLAD\n";
+        std::cerr << "[ERROR] Failed to initialize GLAD\n";
         return -1;
     }
-    cout << " glad " << endl;
+    cout << "[OK] GLAD Enabled\n";
     glEnable(GL_DEPTH_TEST);
 
     // ImGui setup
@@ -155,20 +157,22 @@ int main()
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
-    cout << " imgui " << endl;
+    cout << "[OK] ImGui Enabled\n";
     // shaders
+    cout << "[SHADER] Using:" << fs::relative("./shaders/vertex_shader.glsl") << endl;
+    cout << "[SHADER] Using:"<< fs::relative("./shaders/fragment_shader.glsl")<< endl;
     Shader lightingShader("./shaders/vertex_shader.glsl", "./shaders/fragment_shader.glsl");
     lightingShader.use();
     lightingShader.setInt("diffuseMap", 0);
     lightingShader.setInt("specularMap", 1);
-    cout << " shader " << endl;
+    cout << "[OK] Shader Linked\n";
     float lightIntensity = 1.0f;
 
     vector<string> texturePaths2 = {
-        "assets/wall.jpg",
-        "assets/Scene/Diffuse_Bake_4k.jpg",
-        "assets/alexander-andrews-vGCErDhrc3E-unsplash.jpg",
-        "assets/moon.jpg"
+        "assets/Scene1/wall.jpg",
+        "assets/Scene1/Diffuse_Bake_4k.jpg",
+        "assets/Scene1/alexander-andrews-vGCErDhrc3E-unsplash.jpg",
+        "assets/Scene1/moon.jpg"
     };
 
     vector<unsigned int> textureIDs(texturePaths2.size());
@@ -182,8 +186,6 @@ int main()
 
     for (size_t i = 0; i < texturePaths2.size(); ++i) {
         glBindTexture(GL_TEXTURE_2D, textureIDs[i]);
-
-        // Set texture parameters
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -193,17 +195,16 @@ int main()
         if (data) {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);
-            std::cout << "Loaded texture: " << texturePaths2[i] << std::endl;
+            std::cout << "[TEXTURE] Loaded: " << texturePaths2[i] << std::endl;
         }
         else {
-            std::cerr << "Failed to load texture: " << texturePaths2[i] << std::endl;
+            std::cerr << "[ERROR]: Failed to load texture: " << texturePaths2[i] << std::endl;
         }
         stbi_image_free(data);
     }
 
     unsigned int sceneTextures[18];
     const char* texturePaths[] = {
-        // "assets/Scene2/2048_steel_stain_diffuse.jpg",
         "assets/Scene2/BricksLongThinRunningExtruded001_COL_2K_METALNESS.png",
         "assets/Scene2/Classic Window v4_BaseColor.1001.png",
         "assets/Scene2/Classical Window v3_BaseColor.1001.png",
@@ -215,22 +216,13 @@ int main()
         "assets/Scene2/Lamp_2_BaseColor.jpg",
         "assets/Scene2/Mansion Door_BaseColor.jpg",
         "assets/Scene2/Material_BaseColor.jpg",
-        // "assets/Scene/height_Out.jpg",
         "assets/Scene2/Image_2.jpg",
-        // "assets/Scene/Mossy Ground_height.jpg",
-        // "assets/Scene/Mossy Ground_normal.jpg",
-        // "assets/Scene/Mossy Ground_roughness.jpg",
-        // "assets/Scene2/StuccoIndoor_GLOSS_1K.tif",
-        // "assets/Scene/Mud_height.jpg",
-        // "assets/Scene/Mud_normal.jpg",
-        // "assets/Scene/Mud_roughness.jpg",
-        // "assets/Scene/Normals_Out.jpg",
-        // "assets/Scene2/StuccoIndoor_NRM_1K.tif",
-        // "assets/Scene2/TexturesCom_Stucco1_1024_normal.tif",
-        // "assets/Scene2/TexturesCom_Stucco1_1024_roughness.tif",
         "assets/Scene2/deadleaves.png",
         "assets/Scene2/Autumn leaves.png",
+        "assets/Scene2/Cocrete wall_BaseColor.jpg",
+        "assets/Scene2/3DModel_Retopo.jpg",
         "assets/Scene2/Previrew_var1.jpg",
+        "assets/Scene2/2048_steel_stain_diffuse.jpg",
         "assets/Scene2/tree_bark_19_color.png",
         "assets/Scene2/Screenshot 2025-05-17 234126.png",
         "assets/Scene2/vecteezy_a-group-of-trees-in-the-middle-of-a-field_51765352.png"
@@ -245,7 +237,7 @@ int main()
         glBindTexture(GL_TEXTURE_2D, sceneTextures[i]);
 
         if (!data) {
-            std::cerr << " Failed to load texture: " << texturePaths[i] << std::endl;
+            std::cerr << "[ERROR] Failed to load texture: " << texturePaths[i] << std::endl;
 
             // Use 1x1 white fallback pixel
             unsigned char whitePixel[] = { 255, 255, 255 };
@@ -253,44 +245,34 @@ int main()
             continue;
         }
         else {
-            cout << "1 ";
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-            cout << "pew";
             glGenerateMipmap(GL_TEXTURE_2D);
-            cout << "pew";
             stbi_image_free(data);
         }
 
         // Setting texture parameters (even for fallback)
-        cout << "pew";
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        cout << "pew";
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        cout << "pew";
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        cout << "pew";
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
-    cout << "pew";
-    // Loading model
-    Model castleModel("assets/utubecastle.fbx");
-    cout << "pew";
+// Loading model
+Model castleModel("assets/Scene1/utubecastle.fbx");
+Model sceneModel("assets/Scene2/House_topengl.fbx");
 
-    Model sceneModel("assets/Scene2/House_topengl.fbx");
-    cout << "pew";
+if (castleModel.meshes.empty()) 
+    std::cerr << "[ERROR] castleModel failed to load!" << std::endl;
+if (sceneModel.meshes.empty()) 
+    std::cerr << "[ERROR] sceneModel failed to load!" << std::endl;
 
-    if (castleModel.meshes.empty())
-        std::cerr << "castleModel failed to load!" << std::endl;
-    if (sceneModel.meshes.empty())
-        std::cerr << "sceneModel failed to load!" << std::endl;
+cout << "[MODEL] Loading: Castle model loaded" << std::endl;
+cout << "[MODEL] Loading: House model loaded" << std::endl;
 
-    cout << "Loading model: " << "assets/utubecastle.fbx" << std::endl;
+int currentModelIndex = 0;
 
-    int currentModelIndex = 0;
-
-    if (sceneModel.meshes.empty()) {
-        std::cerr << "sceneModel has no meshes loaded!" << std::endl;
-    }
+if (sceneModel.meshes.empty()) {
+    std::cerr << "[ERROR] sceneModel has no meshes loaded!" << std::endl;
+}
     // Model transform controls for ImGui
     glm::vec3 modelPosition(0.0f);
     glm::vec3 modelRotation(0.0f);
@@ -373,35 +355,35 @@ int main()
             // === Directional Light ===
             if (ImGui::CollapsingHeader("Directional Light")) {
                 ImGui::Checkbox("Enable Directional Light", &useDirLight);
-                ImGui::SliderFloat3("Direction", glm::value_ptr(dirLightDir), -1.0f, 1.0f);
-                ImGui::ColorEdit3("Ambient", glm::value_ptr(dirLightAmbient));
-                ImGui::ColorEdit3("Diffuse", glm::value_ptr(dirLightDiffuse));
-                ImGui::ColorEdit3("Specular", glm::value_ptr(dirLightSpecular));
+                ImGui::SliderFloat3("Direction##Dir", glm::value_ptr(dirLightDir), -1.0f, 1.0f);
+                ImGui::ColorEdit3("Ambient##Dir", glm::value_ptr(dirLightAmbient));
+                ImGui::ColorEdit3("Diffuse##Dir", glm::value_ptr(dirLightDiffuse));
+                ImGui::ColorEdit3("Specular##Dir", glm::value_ptr(dirLightSpecular));
             }
 
             // === Point Light ===
             if (ImGui::CollapsingHeader("Point Light")) {
                 ImGui::Checkbox("Enable Point Light", &usePointLights);
-                ImGui::SliderFloat3("Position", glm::value_ptr(pointLightPos), -10.0f, 10.0f);
-                ImGui::ColorEdit3("Ambient", glm::value_ptr(pointLightAmbient));
-                ImGui::ColorEdit3("Diffuse", glm::value_ptr(pointLightDiffuse));
-                ImGui::ColorEdit3("Specular", glm::value_ptr(pointLightSpecular));
-                ImGui::SliderFloat("Constant", &pointConst, 0.0f, 2.0f);
-                ImGui::SliderFloat("Linear", &pointLinear, 0.0f, 1.0f);
-                ImGui::SliderFloat("Quadratic", &pointQuad, 0.0f, 1.0f);
+                ImGui::SliderFloat3("Position##Point", glm::value_ptr(pointLightPos), -10.0f, 10.0f);
+                ImGui::ColorEdit3("Ambient##Point", glm::value_ptr(pointLightAmbient));
+                ImGui::ColorEdit3("Diffuse##Point", glm::value_ptr(pointLightDiffuse));
+                ImGui::ColorEdit3("Specular##Point", glm::value_ptr(pointLightSpecular));
+                ImGui::SliderFloat("Constant##Point", &pointConst, 0.0f, 2.0f);
+                ImGui::SliderFloat("Linear##Point", &pointLinear, 0.0f, 1.0f);
+                ImGui::SliderFloat("Quadratic##Point", &pointQuad, 0.0f, 1.0f);
             }
 
             // === Spot Light ===
             if (ImGui::CollapsingHeader("Spot Light")) {
                 ImGui::Checkbox("Enable Spot Light", &useSpotLight);
-                ImGui::ColorEdit3("Ambient", glm::value_ptr(spotLightAmbient));
-                ImGui::ColorEdit3("Diffuse", glm::value_ptr(spotLightDiffuse));
-                ImGui::ColorEdit3("Specular", glm::value_ptr(spotLightSpecular));
-                ImGui::SliderFloat("Constant", &spotConst, 0.0f, 2.0f);
-                ImGui::SliderFloat("Linear", &spotLinear, 0.0f, 1.0f);
-                ImGui::SliderFloat("Quadratic", &spotQuad, 0.0f, 1.0f);
-                ImGui::SliderFloat("CutOff", &spotCutoff, 0.0f, 1.0f);
-                ImGui::SliderFloat("OuterCutOff", &spotOuterCutoff, 0.0f, 1.0f);
+                ImGui::ColorEdit3("Ambient##Spot", glm::value_ptr(spotLightAmbient));
+                ImGui::ColorEdit3("Diffuse##Spot", glm::value_ptr(spotLightDiffuse));
+                ImGui::ColorEdit3("Specular##Spot", glm::value_ptr(spotLightSpecular));
+                ImGui::SliderFloat("Constant##Spot", &spotConst, 0.0f, 2.0f);
+                ImGui::SliderFloat("Linear##Spot", &spotLinear, 0.0f, 1.0f);
+                ImGui::SliderFloat("Quadratic##Spot", &spotQuad, 0.0f, 1.0f);
+                ImGui::SliderFloat("CutOff##Spot", &spotCutoff, 0.0f, 1.0f);
+                ImGui::SliderFloat("OuterCutOff##Spot", &spotOuterCutoff, 0.0f, 1.0f);
             }
 
             ImGui::SliderFloat("Shininess", &shininess, 1.0f, 256.0f);
@@ -486,25 +468,23 @@ int main()
 
                     Texture tex;
                     tex.id = textureIDs[i];
-                    tex.type = "texture_diffuse";
-                    tex.path = texturePaths[i];
+                    tex.type = "texture_diffuse"; 
+                    tex.path = texturePaths[i];  
                     mesh.textures.push_back(tex);
 
                     std::string uniformName = "texture" + std::to_string(i + 1);
                     lightingShader.setInt(uniformName.c_str(), i);
                 }
             }
-
             castleModel.Draw(lightingShader);
         }
         else if (currentModelIndex == 1) {
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, sceneTextures[0]);
+            glBindTexture(GL_TEXTURE_2D, sceneTextures[0]); 
 
             static unsigned int whiteTex = createWhiteTexture();
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, whiteTex);
-
             sceneModel.Draw(lightingShader);
         }
 
